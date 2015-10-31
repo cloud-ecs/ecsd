@@ -14,6 +14,10 @@ exports.public = function (app) {
     app.use('/fonts/',   express.static(dr + '/fonts',   {maxAge: '10d'}));
 };
 
+exports.index = function (app) {
+    app.use('/', express.static(dr));
+};
+
 exports.private = function (app) {
     app.use(function(req, res, next) {
         // console.log('static last: ' + req.path);

@@ -23,8 +23,10 @@ require('./routes/static').public(app);
 http.createServer(app).listen(config.listen.port);
 console.log('Listening on port %d', config.listen.port);
 
+require('./routes/scan').public(app);
 
 // the session is valid, continue
 // require('./routes/static').private(app);
 
+require('./routes/static').index(app);
 require('./routes/error').addErrRoutes(app);
