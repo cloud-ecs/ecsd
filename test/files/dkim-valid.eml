@@ -1,0 +1,52 @@
+Delivered-To: matt.simerson@gmail.com
+Received: by 10.64.225.132 with SMTP id rk4csp1144811iec;
+        Sun, 1 Nov 2015 20:57:34 -0800 (PST)
+X-Received: by 10.202.68.215 with SMTP id r206mr12608157oia.59.1446440254403;
+        Sun, 01 Nov 2015 20:57:34 -0800 (PST)
+Return-Path: <matt@tnpi.net>
+Received: from mail.theartfarm.com (mail.theartfarm.com. [66.128.51.165])
+        by mx.google.com with ESMTPS id mo4si10638116oeb.102.2015.11.01.20.57.33
+        for <matt.simerson@gmail.com>
+        (version=TLSv1.2 cipher=AES128-GCM-SHA256 bits=128/128);
+        Sun, 01 Nov 2015 20:57:33 -0800 (PST)
+Received-SPF: pass (google.com: domain of matt@tnpi.net designates 66.128.51.165 as permitted sender) client-ip=66.128.51.165;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of matt@tnpi.net designates 66.128.51.165 as permitted sender) smtp.mailfrom=matt@tnpi.net;
+       dkim=pass header.i=@tnpi.net;
+       dmarc=pass (p=REJECT dis=NONE) header.from=tnpi.net
+Received: (qmail 92565 invoked by uid 89); 2 Nov 2015 04:57:33 -0000
+Received: from unknown (HELO mail.theartfarm.com) (127.0.0.30)
+  by mail.theartfarm.com with SMTP; 2 Nov 2015 04:57:33 -0000
+Authentication-Results: mail.theartfarm.com; iprev=pass; auth=pass (cram-md5); spf=pass smtp.mailfrom=tnpi.net
+Received-SPF: Pass (mail.theartfarm.com: domain of tnpi.net designates 50.159.99.59 as permitted sender) receiver=mail.theartfarm.com; identity=mailfrom; client-ip=50.159.99.59; helo=mattbook.simerson.net; envelope-from=<matt@tnpi.net>
+Received-SPF: None (mail.theartfarm.com: domain of mattbook.simerson.net does not designate 50.159.99.59 as permitted sender) receiver=mail.theartfarm.com; identity=helo; client-ip=50.159.99.59; helo=mattbook.simerson.net; envelope-from=<matt@tnpi.net>
+Received: from mattbook.simerson.net (c-50-159-99-59.hsd1.wa.comcast.net [50.159.99.59])
+    by mail.theartfarm.com (Haraka/2.6.1) with ESMTPSA id D9BA216A-16D0-446D-818D-9FB78A147F89.1
+    envelope-from <matt@tnpi.net> (authenticated bits=0)
+    (version=TLSv1/SSLv3 cipher=AES256-SHA verify=NO);
+    Sun, 01 Nov 2015 20:57:32 -0800
+From: Matt Simerson <matt@tnpi.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Subject: test dkim signed
+Message-Id: <46D39965-781C-41B5-B3D0-C61F25F45396@tnpi.net>
+Date: Sun, 1 Nov 2015 20:57:24 -0800
+To: Matt Simerson <matt.simerson@gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 9.1 \(3096.5\))
+X-Mailer: Apple Mail (2.3096.5)
+X-Haraka-p0f: os="Mac OS X " link_type="Ethernet or modem" distance=9 total_conn=1 shared_ip=N
+X-Haraka-GeoIP: NA, US, WA, Seattle, 2699km
+X-Haraka-GeoIP-Received: 50.159.99.59:US
+X-Haraka-FCrDNS: c-50-159-99-59.hsd1.wa.comcast.net
+X-Spam-Level: 
+X-Spam-ASN: 
+X-Spam-Status: No, score=-2.9 required=5.0 autolearn=no autolearn_force=no
+X-Spam-DCC: sonic.net: spamassassin.tnpi.net 1156; Body=0
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on
+    spamassassin.tnpi.net
+X-Spam-Tests: ALL_TRUSTED,BAYES_00,SPF_PASS
+X-Haraka-Karma: score: 15, good: 219, bad: 9, connections: 234, history: 210, pass:relaying
+DKIM-Signature: v=1;a=rsa-sha256;bh=GY6HIKEPmfaP76hg2qB7sE0t1fst6/ixRzELk380vpU=;c=relaxed/simple;d=tnpi.net;h=from:subject:date:message-id:to:mime-version;s=mar2013;b=SgigsDMXPKtUkjAbFJnp25zkWDnrNdNNDMGQ/gLIhUYAH6Yz8JglQE2xmauCN5SVPbgkyxc5I3HlRHuVQqLTRuQUjPBS7QfqTB8oH1HU9q7WZY6ZEIo4GtC3BffAux2Ed/Js69ttY2YPXgGHgvKDehJj1gUYDuIN3hGALcm8ItN5XPYFiCms+O0BhuSy5TarpwDKYsEenFNaT4wVW5L+9Uv4HGLpj3mNZw0xt4OCbYQ2M+mL7oVZPenMMI0ltflq82AU8jlUH1rYgAWUa8qfErWlyTOAt9ST0CZitrmJRjt0k7XXFjVzCElhjlmDqhdp9NBChxZmNW+wNSY43aEQCA==
+
+test dkim signed message
+
