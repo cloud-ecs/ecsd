@@ -18,7 +18,9 @@
   },
   "dependencies": {
     "async": "^1.5.0",
+    "body-parser": "^1.14.1",
     "express": "^4.13.3",
+    "formidable": "^1.0.17",
     "ini": "*",
     "morgan": "^1.6.1",
     "serve-favicon": "^2.3.0"
@@ -26,8 +28,16 @@
   "devDependencies": {
     "blanket": "*",
     "coveralls": "*",
+    "grunt": "^0.4.5",
+    "grunt-bower": "^0.20.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-eslint": "^17.3.1",
+    "grunt-mocha-test": "^0.12.7",
+    "grunt-nodemon": "^0.4.0",
     "mocha": "*",
     "mocha-lcov-reporter": "*",
+    "nodemon": "^1.8.0",
+    "open": "0.0.5",
     "travis-cov": "*"
   },
   "config": {

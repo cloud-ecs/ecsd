@@ -2,8 +2,8 @@
 var scanner = require('../lib/scanner');
 
 exports.public = function (app) {
-
-    app.post('/scan/all', scanner.all);
-
-
+	// curl -X POST -F eicar=@eicar.eml localhost:8000/scan
+	
+    app.post('/scan', scanner.post);
+    app.get ('/scan', scanner.get);
 };

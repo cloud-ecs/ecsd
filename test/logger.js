@@ -28,5 +28,5 @@ describe('logger', function () {
         it('error', function () {
             assert.ifError(logger.error('test error'));
         });
-     });
+    });
 });

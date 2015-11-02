@@ -1,8 +1,6 @@
 'use strict';
 
 var assert  = require('assert');
-var fs      = require('fs');
-var path    = require('path');
 
 var config  = require('../lib/config');
 

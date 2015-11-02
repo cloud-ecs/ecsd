@@ -1,0 +1,11 @@
+Subject: Email test (clean test message)
+Message-ID: <CLEAN1.1010101@example.net>
+Date: Sun, 01 Nov 2015 23:30:00 +0200
+From: Sender <sender@example.net>
+To: Recipient <recipient@example.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+This is a clean test email. It should not be blocked by virus scanners.
+
