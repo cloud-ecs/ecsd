@@ -2,6 +2,7 @@ language: node_js
 node_js:
     - "0.10"
     - "4.2"
+    - "5.0"
 
 #os:
 #    - linux
@@ -10,7 +11,7 @@ node_js:
 matrix:
     allow_failures:
 #        - os: osx
-#        - node_js: 4.2
+         - node_js: 5.0
     fast_finish: true
 
 services:
