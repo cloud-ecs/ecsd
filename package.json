@@ -1,7 +1,7 @@
 {
-  "name": "cloud-email-scanner",
-  "description": "Cloud enabled Email Scanner",
-  "version": "0.0.1",
+  "name": "email-scanning-server",
+  "description": "Cloud enabled Email Scanning Server",
+  "version": "0.0.3",
   "private": false,
   "keywords": [
     "email",

@@ -8,15 +8,23 @@ var clamav = require('../lib/clamav');
 var virusMsg = path.resolve('test/files/eicar.eml');
 var cleanMsg = path.resolve('test/files/clean.eml');
 
+if (/worker/.test(require('os').hostname())) return;
+console.log(require('os').hostname());
+
+before(function (done) {
+  clamav.isFound(function (err, found) {
+    done(err);
+  });
+});
+
 describe('clamav clamdscan', function () {
 
   before(function (done) {
-    clamav.binFound(function (err, bin) {
-      assert.ifError(err);
-      assert.ok(bin);
+    clamav.binAvailable(function (err, bin) {
+      if (err) return done(err);
       done();
     });
-  });
+  });  
 
   it('finds eicar virus in message', function (done) {
     clamav.scanBin(virusMsg, function (err, results) {
@@ -42,8 +50,7 @@ describe('clamav clamd TCP', function () {
 
   before(function (done) {
     clamav.tcpListening(function (err, listening) {
-      assert.ifError(err);
-      assert.ok(listening);
+      if (err) return done(err);
       done();
     });
   });
@@ -72,8 +79,7 @@ describe('clamav clamd unix socket', function () {
 
   before(function (done) {
     clamav.socketFound(function (err, listening) {
-      assert.ifError(err);
-      assert.ok(listening);
+      if (err) return done(err);
       done();
     });
   });
@@ -101,10 +107,9 @@ describe('clamav clamd unix socket', function () {
 describe('clamav scan dispatch', function () {
 
   before(function (done) {
-    clamav.isAvailable(function (err, listening) {
-      // console.log(arguments);
-      assert.ifError(err);
-      assert.ok(listening);
+    clamav.isAvailable(function (err, available) {
+      if (err) return done(err);
+      if (!available) return done(new Error('clamav not available'));
       done();
     });
   });

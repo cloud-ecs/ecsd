@@ -5,7 +5,7 @@ var findTcp = require('../lib/detect-tcp').findTcp;
 
 describe('detect-tcp', function () {
 
-    it('detects a listening port', function (done) {
+    it.skip('detects a listening port', function (done) {
         findTcp({ port: 3310 }, function (err, listening) {
             assert.ifError(err);
             // console.log(listening);

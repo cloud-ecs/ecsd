@@ -11,65 +11,72 @@ var unsignedMsg = path.resolve('test/files/clean.eml');
 
 describe('opendkim', function () {
 
-    it('is present', function (done) {
-        opendkim.binFound(function (err, bin) {
-            assert.ifError(err);
-            assert.ok(bin);
-            done();
-        });
+  before(function (done) {
+    opendkim.binFound(function (err, found) {
+      if (err) return done(err);
+      if (!found) return done(new Error('not installed?'));
+      done();
     });
+  });
 
-    it('valid signed message yields pass', function (done) {
-        opendkim.binFound(function (err, bin) {
-            if (err) return done(err);
-            opendkim.available.bin = bin;
-
-            opendkim.scanBin(signedValidMsg, function (err, results) {
-                assert.ifError(err);
-                // console.log(results);
-                assert.ok(results.pass.length > 0);
-                done();
-            });
-        });
+  it('is found', function (done) {
+    opendkim.binFound(function (err, binFound) {
+      // console.log(arguments);
+      assert.ifError(err);
+      assert.ok(binFound);
+      done();
     });
+  });
 
-    it('invalid signed message yields fail', function (done) {
-        opendkim.binFound(function (err, bin) {
-            if (err) return done(err);
-            opendkim.available.bin = bin;
-
-            opendkim.scanBin(signedInvalidMsg, function (err, results) {
-                assert.ifError(err);
-                // console.log(results);
-                assert.ok(results.fail.length > 0);
-                done();
-            });
-        });
+  it('is available', function (done) {
+    opendkim.isAvailable(function (err, binFound) {
+      // console.log(arguments);
+      assert.ifError(err);
+      assert.ok(binFound);
+      done();
     });
+  });
 
+  it('valid signed message yields pass', function (done) {
+    opendkim.binFound(function (err, bin) {
+      if (err) return done(err);
+      opendkim.available.bin = bin;
 
-    it('unsigned message yields failure', function (done) {
-        opendkim.binFound(function (err, bin) {
-            if (err) return done(err);
-            opendkim.available.bin = bin;
-
-            opendkim.scanBin(unsignedMsg, function (err, results) {
-                assert.ifError(err);
-                // console.log(results);
-                assert.ok(results.fail.length > 0);
-                done();
-            });
-        });
+      opendkim.scanBin(signedValidMsg, function (err, results) {
+        assert.ifError(err);
+        // console.log(results);
+        assert.ok(results.pass.length > 0);
+        done();
+      });
     });
+  });
+
+  it('invalid signed message yields fail', function (done) {
+    opendkim.binFound(function (err, bin) {
+      if (err) return done(err);
+      opendkim.available.bin = bin;
+
+      opendkim.scanBin(signedInvalidMsg, function (err, results) {
+        assert.ifError(err);
+        // console.log(results);
+        assert.ok(results.fail.length > 0);
+        done();
+      });
+    });
+  });
+
+  it('unsigned message yields failure', function (done) {
+    opendkim.binFound(function (err, bin) {
+      if (err) return done(err);
+      opendkim.available.bin = bin;
+
+      opendkim.scanBin(unsignedMsg, function (err, results) {
+        assert.ifError(err);
+        // console.log(results);
+        assert.ok(results.fail.length > 0);
+        done();
+      });
+    });
+  });
 });
 
-describe('opendkim', function () {
-    it('is available', function (done) {
-        opendkim.isAvailable(function (err, binFound) {
-            // console.log(arguments);
-            assert.ifError(err);
-            assert.ok(binFound);
-            done();
-        });
-    });
-});
