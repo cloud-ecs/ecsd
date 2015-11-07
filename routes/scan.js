@@ -1,3 +1,4 @@
+'use strict';
 
 var scanner = require('../lib/scanner');
 
