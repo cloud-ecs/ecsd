@@ -1,5 +1,5 @@
 [![Build Status][ci-img]][ci-url]
-[![Coverage Status][cov-img]][cov-url]
+[![Code Coverage][cov-img]][cov-url]
 [![Code Climate][clim-img]][clim-url]
 
 # Cloud Email Scanner Server
@@ -26,7 +26,7 @@ each available scanner.
 
 [ci-img]: https://travis-ci.org/cloud-css/ess.svg
 [ci-url]: https://travis-ci.org/cloud-css/ess
-[cov-img]: https://coveralls.io/repos/cloud-css/ess/badge.svg
-[cov-url]: https://coveralls.io/github/cloud-css/ess
+[cov-img]: https://codecov.io/github/cloud-css/ess/coverage.svg
+[cov-url]: https://codecov.io/github/cloud-css/ess
 [clim-img]: https://codeclimate.com/github/cloud-css/ess/badges/gpa.svg
 [clim-url]: https://codeclimate.com/github/cloud-css/ess

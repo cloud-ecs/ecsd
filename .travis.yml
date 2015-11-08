@@ -27,21 +27,17 @@ addons:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y opendkim
-  - sudo apt-get install -y spamassassin
-# - sudo apt-get install -y clamav clamav-base libclamav6 clamav-freshclam clamav-daemon
-# freshclam takes 20+ minutes to download databases
-# - sudo /usr/bin/freshclam
-# - sudo /etc/init.d/clamav-daemon start
+# - sudo test/install-spamassassin.sh
+# - sudo test/install-clamav.sh
 
 #before_script:
 #script:
 
 after_success:
-# - npm run coverage
-# - npm run coveralls
-  - npm install istanbul
-  - ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec \
-    && cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js
+  - npm install istanbul codecov.io
+  - sudo test/install-spamassassin.sh
+  - NODE_ENV=cov ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec
+  - cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js
 
 #after_script:
 
