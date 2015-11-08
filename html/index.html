@@ -1,15 +1,135 @@
 <!DOCTYPE html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
+  <meta name="description" content="">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="author" content="">
 
-    </body>
+  <title>Email Scanning Server</title>
+
+  <link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/ess.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-top" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Email Scanning Server</a>
+      </div>
+      <div id="navbar-top" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li role="presentation">
+            <a role="tab" data-toggle="tab" href="#home" aria-controls="home">Home</a></li>
+
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Status <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li role="presentation"><a href="#" role="tab" data-toggle="status-all">All</a></li>
+              <li role="separator" class="divider"></li>
+
+              <li role="presentation">
+                <a role="tab" data-toggle="tab" href="#status-clamav" aria-controls="status-clamav">ClamAV</a></li>
+              <li role="presentation">
+                <a role="tab" data-toggle="tab" href="#status-rspamd" aria-controls="status-rspamd">rspamd</a></li>
+              <li role="presentation">
+                <a role="tab" data-toggle="tab" href="#status-spamassassin" aria-controls="status-spamassassin">Spamassassin</a></li>
+              <li role="presentation">
+                <a role="tab" data-toggle="tab" href="#status-opendkim" aria-controls="status-opendkim">OpenDKIM</a></li>
+              <li role="presentation">
+                <a role="tab" data-toggle="tab" href="#status-dspam" aria-controls="status-dspam">DSPAM</a></li>
+              <li role="presentation">
+                <a role="tab" data-toggle="tab" href="#status-comodo" aria-controls="status-comodo">Comodo</a></li>
+            </ul>
+          </li>
+
+          <li role="presentation">
+            <a role="tab" data-toggle="tab" href="#scan" aria-controls="scan">Scan</a></li>
+          <li role="presentation">
+            <a role="tab" data-toggle="tab" href="#monitor" aria-controls="monitor">Monitor</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+
+    <div role="tabpanel" class="tab-pane fade in active" data-toggle="tab" id="home">
+      <div class="row">
+        <div class="col-xs-3">Counters</div>
+        <div class="col-xs-3"><p class="lead">Pass</p></div>
+        <div class="col-xs-3"><p class="lead">Fail</p></div>
+        <div class="col-xs-3"><p class="lead">Total</p></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-3">ClamAV</div>
+        <div class="col-xs-3"><p class="lead">8,374</p></div>
+        <div class="col-xs-3"><p class="lead">35</p></div>
+        <div class="col-xs-3"><p class="lead">0</p></div>
+      </div>
+      <div class="row">
+        <div class="col-xs-3">SpamAssassin</div>
+        <div class="col-xs-3"><p class="lead">1,234</p></div>
+        <div class="col-xs-3"><p class="lead">6,543</p></div>
+        <div class="col-xs-3"><p class="lead">0</p></div>
+      </div>
+
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="status-all">
+      <p class="lead">Scanner Statuses</p>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="status-clamav">
+      <p class="lead">ClamAV Status</p>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="status-spamassassin" >
+      <p class="lead">Spamassassin Status</p>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="scan">
+      <h1>Scan</h1>
+      <p class="lead">ESS scan page</p>
+
+      <form action="/scan" enctype="multipart/form-data" method="post">
+        <input type="text" name="title"><br>
+        <input type="file" name="upload" multiple="multiple"><br>
+        <input type="submit" value="Upload">
+      </form>
+    </div>
+
+    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="monitor">
+      <h1>Monitor</h1>
+      <p class="lead">ESS monitor page</p>
+    </div>
+
+  </div><!-- /.tab-content -->
+
+
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- http://code.jquery.com/ui/1.10.4/jquery-ui.min.js -->
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+  integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
+  crossorigin="anonymous">
+</script>
+
+</body>
 </html>

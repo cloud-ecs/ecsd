@@ -1,0 +1,25 @@
+{
+  "name": "ess",
+  "version": "0.1.0",
+  "description": "Email Scanning Server",
+  "main": "server.js",
+  "keywords": [
+  ],
+  "authors": [
+    "Matt Simerson"
+  ],
+  "homepage": "https://github.com/cloud-css/ess",
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ],
+  "dependencies": {
+    "html5-boilerplate": "*",
+    "bootstrap": "~4",
+    "jquery": "^2",
+    "fontawesome": "^4"
+  }
+}

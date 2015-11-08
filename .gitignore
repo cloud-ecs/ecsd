@@ -1,3 +1,5 @@
 node_modules
 npm-debug.log
 spool
+bower_components
+ess.sublime-*

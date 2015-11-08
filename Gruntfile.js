@@ -2,45 +2,64 @@
 
 module.exports = function(grunt) {
 
-    // grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-nodemon');
-    // grunt.loadNpmTasks('grunt-bower');
-    // grunt.loadNpmTasks('grunt-bower-install-simple');
+    grunt.loadNpmTasks('grunt-bower');
 
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        'bower-install-simple': {
-            options: {
-                color: true,
-                directory: 'lib'
-            },
+        bower: {
             prod: {
+                dest:        'html/vendor',
+                images_dest: 'html/vendor/img',
+                js_dest:     'html/vendor/js',
+                css_dest:    'html/vendor/css',
+                fonts_dest:  'html/vendor/fonts',
+
                 options: {
-                    production: true
-                }
-            },
-            dev: {
-                options: {
-                    production: false
-                }
+                    expand: false,
+                    keepExpandedHierarchy: false,
+                    packageSpecific: {
+                        bootstrap: {
+                            files: [
+                                "dist/css/bootstrap.min.css",
+                                "dist/js/bootstrap.min.js"
+                            ]
+                        },
+                        jquery: {
+                            files: [
+                                "dist/jquery.min.js"
+                            ]
+                        },
+                        "html5-boilerplate": {
+                            files: [
+                                "404.html",
+                                "apple-touch-icon.png",
+                                "crossdomain.xml",
+                                "browserconfig.xml",
+                                "favicon.ico",
+                                "robots.txt"
+                            ]
+                        },
+                        fontawesome: {
+                            files: [
+                                "css/font-awesome.min.css",
+                                "fonts/FontAwesome.otf",
+                                "fonts/fontawesome-webfont.svg",
+                                "fonts/fontawesome-webfont.woff",
+                                "fonts/fontawesome-webfont.eot",
+                                "fonts/fontawesome-webfont.ttf",
+                                "fonts/fontawesome-webfont.woff2"
+                            ]
+                        }
+                    }
+                },
             }
         },
-        // bower: {
-        //     dev: {
-        //         dest: 'html/vendor',
-        //         js_dest: 'html/js/vendor',
-        //         css_dest: 'html/css/vendor',
-        //         fonts_dest: 'html/fonts/vendor',
-        //         options: {
-        //             expand: false,
-        //             keepExpandedHierarchy: false
-        //         },
-        //     }
-        // },
         eslint: {
             target: ['Gruntfile.js', 'server.js', 'lib/*.js', 'test/*.js'],
         },
@@ -79,7 +98,7 @@ module.exports = function(grunt) {
             tasks: ['eslint', 'mochaTest']
         },
         clean: {
-            // build: ['build', 'html/js/client.js'],
+            build: ['build', 'html/js/client.js'],
         },
     });
 
