@@ -108,11 +108,19 @@
       <h1>Scan</h1>
       <p class="lead">ESS scan page</p>
 
-      <form action="/scan" enctype="multipart/form-data" method="post">
-        <input type="text" name="title"><br>
-        <input type="file" name="upload" multiple="multiple"><br>
-        <input type="submit" value="Upload">
-      </form>
+        <form action="/scan" enctype="multipart/form-data" method="post">
+
+          <div class="form-group">
+            <label for="filename">File Name (optional)</label>
+            <input type="text" name="filename" id="filename">
+            <p class="help-block"></p>
+          </div>
+
+          <input type="file" id="upload" name="upload" multiple="multiple">
+
+          <button type="submit" class="btn btn-default">Upload</button>
+        </form>
+
     </div>
 
     <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="monitor">

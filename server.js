@@ -28,3 +28,5 @@ require('./routes/scan').public(app);
 
 require('./routes/static').index(app);
 require('./routes/error').addErrRoutes(app);
+
+require('./lib/scanner');

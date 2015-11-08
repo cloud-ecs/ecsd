@@ -1,13 +1,9 @@
 body {
   padding-top: 50px;
-  background-color: black;
+  background-color: #252830;
   color: white;
 }
 .tab-content {
   padding: 40px 15px;
   text-align: center;
-}
-input {
-  background-color: black;
-  color: white;
 }
