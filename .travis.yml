@@ -37,8 +37,11 @@ before_install:
 #script:
 
 after_success:
-  - npm run coverage
-  - npm run coveralls
+# - npm run coverage
+# - npm run coveralls
+  - npm install istanbul
+  - ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec \
+    && cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js
 
 #after_script:
 

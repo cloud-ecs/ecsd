@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "blanket": "*",
+    "codecov.io": "*",
     "coveralls": "*",
     "grunt": "^0.4.5",
     "grunt-bower": "^0.20.0",

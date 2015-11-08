@@ -1,6 +1,7 @@
 node_modules
+bower_components
+coverage
 npm-debug.log
 spool
-bower_components
 ess.sublime-*
 html/vendor
