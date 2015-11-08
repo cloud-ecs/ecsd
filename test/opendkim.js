@@ -10,6 +10,7 @@ var signedInvalidMsg = path.resolve('test/files/dkim-invalid.eml');
 var unsignedMsg = path.resolve('test/files/clean.eml');
 
 describe('opendkim', function () {
+    this.timeout(3000);
 
     before(function (done) {
         opendkim.binFound(function (err, found) {
@@ -29,6 +30,7 @@ describe('opendkim', function () {
     });
 
     it('is available', function (done) {
+        this.timeout(4000);
         opendkim.isAvailable(function (err, binFound) {
             // console.log(arguments);
             assert.ifError(err);
