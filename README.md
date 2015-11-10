@@ -24,9 +24,9 @@ The response will be a JSON encoded array, with the request and response for
 each available scanner. 
 
 
-[ci-img]: https://travis-ci.org/cloud-css/ess.svg
-[ci-url]: https://travis-ci.org/cloud-css/ess
-[cov-img]: https://codecov.io/github/cloud-css/ess/coverage.svg
-[cov-url]: https://codecov.io/github/cloud-css/ess
-[clim-img]: https://codeclimate.com/github/cloud-css/ess/badges/gpa.svg
-[clim-url]: https://codeclimate.com/github/cloud-css/ess
+[ci-img]: https://travis-ci.org/cloud-ess/ess.svg
+[ci-url]: https://travis-ci.org/cloud-ess/ess
+[cov-img]: https://codecov.io/github/cloud-ess/ess/coverage.svg
+[cov-url]: https://codecov.io/github/cloud-ess/ess
+[clim-img]: https://codeclimate.com/github/cloud-ess/ess/badges/gpa.svg
+[clim-url]: https://codeclimate.com/github/cloud-ess/ess
