@@ -8,8 +8,8 @@ var dspam  = require('../lib/dspam');
 var spamMsg  = path.resolve('test/files/gtube.eml');
 var cleanMsg = path.resolve('test/files/clean.eml');
 
-// if (/worker/.test(require('os').hostname())) return;
-// console.log(require('os').hostname());
+if (/worker/.test(require('os').hostname())) return;
+console.log(require('os').hostname());
 
 before(function (done) {
     dspam.isFound(function (err, found) {
