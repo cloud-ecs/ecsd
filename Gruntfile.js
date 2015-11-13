@@ -61,7 +61,7 @@ module.exports = function(grunt) {
             }
         },
         eslint: {
-            target: ['Gruntfile.js', 'server.js', 'lib/*.js', 'test/*.js'],
+            target: ['server.js', 'lib/*.js', 'test/*.js'],
         },
         mochaTest: {
             options: {

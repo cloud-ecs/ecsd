@@ -20,113 +20,11 @@
 
 <body>
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-top" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Email Scanning Server</a>
-      </div>
-      <div id="navbar-top" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li role="presentation">
-            <a role="tab" data-toggle="tab" href="#home" aria-controls="home">Home</a></li>
-
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Status <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#status-all" aria-controls="status-all">All</a>
-              </li>
-              <!--
-              <li role="separator" class="divider"></li>
-
-              <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#status-clamav" aria-controls="status-clamav">ClamAV</a></li>
-              <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#status-rspamd" aria-controls="status-rspamd">rspamd</a></li>
-              <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#status-spamassassin" aria-controls="status-spamassassin">Spamassassin</a></li>
-              <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#status-opendkim" aria-controls="status-opendkim">OpenDKIM</a></li>
-              <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#status-dspam" aria-controls="status-dspam">DSPAM</a></li>
-              <li role="presentation">
-                <a role="tab" data-toggle="tab" href="#status-comodo" aria-controls="status-comodo">Comodo</a></li>
-                -->
-            </ul>
-          </li>
-
-          <li role="presentation">
-            <a role="tab" data-toggle="tab" href="#scan" aria-controls="scan">Scan</a></li>
-          <li role="presentation">
-            <a role="tab" data-toggle="tab" href="#monitor" aria-controls="monitor">Monitor</a></li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
+  <nav id="navbartop" class="navbar navbar-inverse navbar-fixed-top">
   </nav>
 
   <!-- Tab panes -->
   <div class="tab-content">
-
-    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="home">
-      <div class="row">
-        <div class="col-xs-3">Counters</div>
-        <div class="col-xs-3"><p class="lead">Pass</p></div>
-        <div class="col-xs-3"><p class="lead">Fail</p></div>
-        <div class="col-xs-3"><p class="lead">Total</p></div>
-      </div>
-
-      <div class="row">
-        <div class="col-xs-3">ClamAV</div>
-        <div class="col-xs-3"><p class="lead">8,374</p></div>
-        <div class="col-xs-3"><p class="lead">35</p></div>
-        <div class="col-xs-3"><p class="lead">0</p></div>
-      </div>
-      <div class="row">
-        <div class="col-xs-3">SpamAssassin</div>
-        <div class="col-xs-3"><p class="lead">1,234</p></div>
-        <div class="col-xs-3"><p class="lead">6,543</p></div>
-        <div class="col-xs-3"><p class="lead">0</p></div>
-      </div>
-
-    </div>
-
-    <div role="tabpanel" class="tab-pane fade in active" data-toggle="tab" id="status-all">
-      <p class="lead">Scanner Status</p>
-    </div>
-
-    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="status-clamav">
-      <p class="lead">ClamAV Status</p>
-    </div>
-
-    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="status-spamassassin" >
-      <p class="lead">Spamassassin Status</p>
-    </div>
-
-    <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="scan">
-      <h1>Scan</h1>
-      <p class="lead">ESS scan page</p>
-
-        <form action="/scan" enctype="multipart/form-data" method="post">
-
-          <div class="form-group">
-            <label for="filename">File Name (optional)</label>
-            <input type="text" name="filename" id="filename">
-            <p class="help-block"></p>
-          </div>
-
-          <div class="form-group">
-            <input type="file" id="upload" name="upload" multiple="multiple">
-          </div>
-          <button type="submit" class="btn btn-default">Upload</button>
-        </form>
-
-    </div>
 
     <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="monitor">
       <h1>Monitor</h1>
@@ -134,14 +32,6 @@
     </div>
 
   </div><!-- /.tab-content -->
-
-<div class="hidden">
-  <div class="row" id="status-template">
-    <div class="col-xs-3"></div>
-    <div class="col-xs-3"></div>
-    <div class="col-xs-3"></div>
-  </div>
-</div>
 
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 <!-- http://code.jquery.com/ui/1.10.4/jquery-ui.min.js -->
@@ -151,32 +41,7 @@
   crossorigin="anonymous">
 </script>
 <script>
-jQuery.getJSON( '/status/scannersAll', function (data) {
-  var scanAll = data.scanners;
-  for (var i = 0; i < scanAll.length; i++) {
-    var s = scanAll[i];
-    var newRow = $('#status-template').clone().attr('id', 'status-' + s);
-    newRow.children(':first').html(s);
-    newRow.data('name', s);
-    $('#status-all').append(newRow);
-  }
-
-  jQuery.getJSON('/status/scannersAvailable', function (data) {
-    // console.log(data);
-    var scanAvail = data.scanners;
-    for (var i = 0; i < scanAll.length; i++) {
-      var t = scanAll[i];
-      var statusDiv = $('#status-' + t).children(':nth-child(2)');
-      if (scanAvail[scanAll[i]]) {
-        var ifType = scanAvail[scanAll[i]].available.any;
-        statusDiv.html('<p class="text-success">' + ifType + '</p>');
-      }
-      else {
-        statusDiv.html('<p class="text-danger">n.a.</p>');
-      }
-    }
-  });
-});
+$('#navbartop').load('/navbar.html');
 </script>
 </body>
 </html>

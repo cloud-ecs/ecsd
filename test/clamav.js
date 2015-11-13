@@ -30,8 +30,8 @@ describe('clamav clamdscan', function () {
         clamav.scanBin(virusMsg, function (err, results) {
             assert.ifError(err);
             // console.log(results);
-            assert.ok(results.infected);
-            assert.equal(results.name, 'Eicar-Test-Signature');
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
             done();
         });
     });
@@ -39,8 +39,8 @@ describe('clamav clamdscan', function () {
     it('passes a clean message', function (done) {
         clamav.scanBin(cleanMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(results.infected, false);
-            assert.equal(results.name, '');
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -56,20 +56,19 @@ describe('clamav clamd TCP', function () {
     });
 
     it('detects a virus laden message', function (done) {
-        clamav.scanTcp(virusMsg, function (err, result) {
+        clamav.scanTcp(virusMsg, function (err, results) {
             assert.ifError(err);
-            // console.log(result);
-            assert.equal(result.infected, true);
-            assert.equal(result.name, 'Eicar-Test-Signature');
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
             done();
         });
     });
 
     it('passes a clean message', function (done) {
-        clamav.scanTcp(cleanMsg, function (err, result) {
-            // console.log(result);
+        clamav.scanTcp(cleanMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.infected, false);
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -85,20 +84,19 @@ describe('clamav clamd unix socket', function () {
     });
 
     it('detects virus in message', function (done) {
-        clamav.scanSocket(virusMsg, function (err, result) {
+        clamav.scanSocket(virusMsg, function (err, results) {
             assert.ifError(err);
-            // console.log(result);
-            assert.equal(result.infected, true);
-            assert.equal(result.name, 'Eicar-Test-Signature');
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
             done();
         });
     });
 
     it('passes a clean message', function (done) {
-        clamav.scanSocket(cleanMsg, function (err, result) {
-            // console.log(result);
+        clamav.scanSocket(cleanMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.infected, false);
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -115,17 +113,19 @@ describe('clamav scan dispatch', function () {
     });
 
     it('scans viruses', function (done) {
-        clamav.scan(virusMsg, function (err, result) {
+        clamav.scan(virusMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.infected, true);
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
             done();
         });
     });
 
     it('scans clean', function (done) {
-        clamav.scan(cleanMsg, function (err, result) {
+        clamav.scan(cleanMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.infected, false);
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
