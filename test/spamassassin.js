@@ -38,7 +38,7 @@ describe('spamassassin spamc', function () {
     it('passes a clean message', function (done) {
         spam.scanBin(hamMsg, function (err, results) {
             assert.ifError(err);
-            console.log(results);
+            // console.log(results);
             assert.equal(results.pass.length, 1);
             done();
         });
