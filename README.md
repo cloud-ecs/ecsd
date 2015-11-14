@@ -20,8 +20,41 @@ Sent metadata about the connection / message as HTTP headers.
 
 ## Response
 
-The response will be a JSON encoded array, with the request and response for
+The response is a JSON encoded array, with the request and response for
 each available scanner. 
+
+```json
+[
+    {
+        "name":"clamav",
+        "pass":[],
+        "fail":["Eicar-Test-Signature"],
+        "error":[],
+        "raw":"/Users/matt/Documents/git/ess/spool/upload_9f8c482aaaa10fcf501bf5259c00746c.eml: Eicar-Test-Signature FOUND\n"
+    },
+    {
+        "name":"spamassassin",
+        "pass":["ham"],
+        "fail":[],
+        "raw":"SPAMD/1.1 0
+EX_OK\r\nContent-length: 62\r\nSpam: False ; 2.3 /
+5.0\r\n\r\nAPOSTROPHE_FROM,MISSING_DATE,MISSING_MID,NO_RECEIVED,NO_RELAYS","error":[]},{"pass":["5646b98f634915112796250"],"fail":[],"name":"dspam","raw":"X-DSPAM-Result:
+matt; result=\"Innocent\"; class=\"Whitelisted\"; probability=0.0000; confidence=0.99; signature=5646b98f634915112796250\n",
+        "error":[]
+    },
+    {
+        "name":"opendkim",
+        "pass":[],
+        "fail":["message not signed"],
+        "raw":"opendkim: /Users/matt/Documents/git/ess/spool/upload_9f8c482aaaa10fcf501bf5259c00746c.eml: message not signed\n",
+        "error":[]
+    }
+]
+```
+
+### Status Page
+
+![status page image](https://cloud.githubusercontent.com/assets/261635/11162087/56acf54a-8a46-11e5-882c-5d8b5a704d71.png)
 
 
 [ci-img]: https://travis-ci.org/cloud-ess/ess.svg
