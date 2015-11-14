@@ -30,7 +30,7 @@ describe('spamassassin spamc', function () {
     it('finds gtube spam message', function (done) {
         spam.scanBin(spamMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(results.spam, true);
+            assert.equal(results.fail.length, 1);
             done();
         });
     });
@@ -38,7 +38,8 @@ describe('spamassassin spamc', function () {
     it('passes a clean message', function (done) {
         spam.scanBin(hamMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(results.spam, false);
+            console.log(results);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -62,19 +63,19 @@ describe('spamd TCP', function () {
     });
 
     it('detects a spam message', function (done) {
-        spam.scanTcp(spamMsg, function (err, result) {
+        spam.scanTcp(spamMsg, function (err, results) {
             assert.ifError(err);
             // console.log(result);
-            assert.equal(result.spam, true);
+            assert.equal(results.fail.length, 1);
             done();
         });
     });
 
     it('passes a clean message', function (done) {
-        spam.scanTcp(hamMsg, function (err, result) {
+        spam.scanTcp(hamMsg, function (err, results) {
             // console.log(result);
             assert.ifError(err);
-            assert.equal(result.spam, false);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -90,19 +91,19 @@ describe('spamd unix socket', function () {
     });
 
     it('detects spam message', function (done) {
-        spam.scanSocket(spamMsg, function (err, result) {
+        spam.scanSocket(spamMsg, function (err, results) {
             assert.ifError(err);
             // console.log(result);
-            assert.equal(result.spam, true);
+            assert.equal(results.fail.length, 1);
             done();
         });
     });
 
     it('passes a clean message', function (done) {
-        spam.scanSocket(hamMsg, function (err, result) {
+        spam.scanSocket(hamMsg, function (err, results) {
             // console.log(result);
             assert.ifError(err);
-            assert.equal(result.spam, false);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -118,18 +119,18 @@ describe('spam scan dispatch', function () {
         });
     });
 
-    it('scans viruses', function (done) {
-        spam.scan(spamMsg, function (err, result) {
+    it('scans spam', function (done) {
+        spam.scan(spamMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.spam, true);
+            assert.equal(results.fail.length, 1);
             done();
         });
     });
 
     it('scans clean', function (done) {
-        spam.scan(hamMsg, function (err, result) {
+        spam.scan(hamMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.spam, false);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });

@@ -31,8 +31,7 @@ describe('dspam bin', function () {
             assert.ifError(err);
             // console.log(results);
             // naive bayes...
-            assert.equal(results.spam, true);
-            assert.ok(results.name);
+            // assert.equal(results.fail.length, 1);
             done();
         });
     });
@@ -40,8 +39,7 @@ describe('dspam bin', function () {
     it('passes a clean message', function (done) {
         dspam.scanBin(cleanMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(results.spam, false);
-            assert.ok(results.name);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -65,21 +63,21 @@ describe('dspam TCP', function () {
     });
 
     it.skip('detects a spam message', function (done) {
-        dspam.scanTcp(spamMsg, function (err, result) {
+        dspam.scanTcp(spamMsg, function (err, results) {
             assert.ifError(err);
             // console.log(result);
             // silly naive bayes..., doesn't know any better...yet
-            // assert.equal(result.spam, true);
+            // assert.equal(results.fail.length, 1);
             assert.ok(result.raw);
             done();
         });
     });
 
     it('passes a clean message', function (done) {
-        dspam.scanTcp(cleanMsg, function (err, result) {
-            // console.log(result);
+        dspam.scanTcp(cleanMsg, function (err, results) {
+            // console.log(results);
             assert.ifError(err);
-            assert.equal(result.spam, false);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -95,20 +93,20 @@ describe.skip('dspam unix socket', function () {
     });
 
     it.skip('detects spam message', function (done) {
-        dspam.scanSocket(spamMsg, function (err, result) {
+        dspam.scanSocket(spamMsg, function (err, results) {
             assert.ifError(err);
             // console.log(result);
             // dspam is naive when untrained, so it won't catch this
-            assert.equal(result.spam, true);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
 
     it('passes a clean message', function (done) {
-        dspam.scanSocket(cleanMsg, function (err, result) {
+        dspam.scanSocket(cleanMsg, function (err, results) {
             console.log(result);
             assert.ifError(err);
-            assert.equal(result.spam, false);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });
@@ -125,17 +123,17 @@ describe('dspam scan dispatch', function () {
     });
 
     it.skip('scans spam', function (done) {
-        dspam.scan(spamMsg, function (err, result) {
+        dspam.scan(spamMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.spam, true);
+            assert.equal(results.fail.length, 1);
             done();
         });
     });
 
     it('scans clean', function (done) {
-        dspam.scan(cleanMsg, function (err, result) {
+        dspam.scan(cleanMsg, function (err, results) {
             assert.ifError(err);
-            assert.equal(result.spam, false);
+            assert.equal(results.pass.length, 1);
             done();
         });
     });

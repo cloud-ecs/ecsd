@@ -1,20 +1,20 @@
 {
   "name": "email-scanning-server",
   "description": "Cloud enabled Email Scanning Server",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": false,
   "keywords": [
     "email",
     "antivirus",
     "spam filter"
   ],
-  "homepage": "https://github.com/cloud-css/ess",
+  "homepage": "https://github.com/cloud-ess/ess",
   "bugs": {
-    "url": "https://github.com/cloud-css/ess/issues"
+    "url": "https://github.com/cloud-ess/ess/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cloud-css/ess.git"
+    "url": "https://github.com/cloud-ess/ess.git"
   },
   "dependencies": {
     "async": "^1.5.0",
@@ -29,18 +29,19 @@
     "smtp-connection": "^1.3.1"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-bower": "^0.20.0",
-    "grunt-bower-install-simple": "^1.1.4",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-eslint": "^17.3.1",
-    "grunt-mocha-test": "^0.12.7",
-    "grunt-nodemon": "^0.4.0",
+    "grunt": "*",
+    "grunt-bower": "*",
+    "grunt-bower-install-simple": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-eslint": "*",
+    "grunt-mocha-test": "*",
+    "grunt-nodemon": "*",
     "mocha": "*",
     "mocha-lcov-reporter": "*",
-    "nodemon": "^1.8.0",
-    "open": "0.0.5"
+    "nodemon": "*",
+    "open": "*",
+    "supertest": "*"
   },
   "license": "BSD-2-Clause",
   "scripts": {

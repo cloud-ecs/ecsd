@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="">
+  <link rel="icon" href="/img/favicon.ico">
+  <meta name="author" content="">
+
+  <title>Email Scanning Server</title>
+
+  <link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+  <!-- Custom styles for this template -->
+  <link href="/css/ess.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <nav id="navbartop" class="navbar navbar-inverse navbar-fixed-top">
+  </nav>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+
+    <div id="status-all">
+      <h1>Monitor</h1>
+      <p class="lead">ESS monitor page</p>
+    </div>
+
+  </div>
+
+<div class="hidden">
+  <div class="row" id="status-template">
+    <div class="col-xs-3"></div>
+    <div class="col-xs-3"></div>
+    <div class="col-xs-3"></div>
+  </div>
+</div>
+
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+  integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
+  crossorigin="anonymous">
+</script>
+<script>
+$('#navbartop').load('/navbar.html');
+
+jQuery.getJSON( '/status/scannersAll', function (data) {
+  var scanAll = data.scanners;
+  for (var i = 0; i < scanAll.length; i++) {
+    var s = scanAll[i];
+    var newRow = $('#status-template').clone().attr('id', 'status-' + s);
+    newRow.children(':first').html(s);
+    newRow.data('name', s);
+    $('#status-all').append(newRow);
+  }
+
+  jQuery.getJSON('/status/scannersAvailable', function (data) {
+    // console.log(data);
+    var scanAvail = data.scanners;
+    for (var i = 0; i < scanAll.length; i++) {
+      var t = scanAll[i];
+      var statusDiv = $('#status-' + t).children(':nth-child(2)');
+      if (scanAvail[scanAll[i]]) {
+        var ifType = scanAvail[scanAll[i]].available.any;
+        statusDiv.html('<p class="text-success">' + ifType + '</p>');
+      }
+      else {
+        statusDiv.html('<p class="text-danger">n.a.</p>');
+      }
+    }
+  });
+});
+
+</script>
+</body>
+</html>
