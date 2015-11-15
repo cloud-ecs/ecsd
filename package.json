@@ -38,7 +38,6 @@
     "grunt-mocha-test": "*",
     "grunt-nodemon": "*",
     "mocha": "*",
-    "mocha-lcov-reporter": "*",
     "nodemon": "*",
     "open": "*",
     "supertest": "*"
