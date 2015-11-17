@@ -25,6 +25,7 @@ describe('routes, scan', function () {
     });
 
     describe('POST /scan', function() {
+        this.timeout(3000);
         it('responds with JSON scan results', function(done) {
             agent
                 .post('/scan')

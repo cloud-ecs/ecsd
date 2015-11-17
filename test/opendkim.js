@@ -3,7 +3,7 @@
 var assert = require('assert');
 var path   = require('path');
 
-var opendkim = require('../lib/opendkim');
+var opendkim = require('../lib/opendkim').createScanner();
 
 var signedValidMsg = path.resolve('test/files/dkim-valid.eml');
 var signedInvalidMsg = path.resolve('test/files/dkim-invalid.eml');
@@ -53,6 +53,7 @@ describe('opendkim', function () {
         });
     });
 
+    this.timeout(4000);
     it('invalid signed message yields fail', function (done) {
         opendkim.binFound(function (err, bin) {
             if (err) return done(err);

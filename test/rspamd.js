@@ -1,46 +1,40 @@
 'use strict';
 
 var assert = require('assert');
-var path   = require('path');
 
-var dspam  = require('../lib/dspam').createScanner();
-
-var spamMsg  = path.resolve('test/files/gtube.eml');
-var cleanMsg = path.resolve('test/files/clean.eml');
-
-if (/worker/.test(require('os').hostname())) return;
-console.log(require('os').hostname());
+var rspamd = require('../lib/rspamd').createScanner();
+var isTravis = /worker/.test(require('os').hostname());
+if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
 before(function (done) {
-    dspam.isFound(function (err, found) {
+    rspamd.isFound(function (err, found) {
         done(err);
     });
 });
 
-describe('dspam', function () {
+describe('rspamd', function() {
 
-    describe('dspam cli', function () {
+    describe.skip('rspamc cli', function () {
 
         before(function (done) {
-            dspam.binFound(function (err, bin) {
+            rspamd.binFound(function (err, bin) {
                 if (err) return done(err);
                 done();
             });
         });
 
-        it.skip('detects spam message', function (done) {
-            dspam.scanBin(spamMsg, function (err, results) {
+        it('finds gtube spam message', function (done) {
+            rspamd.scanBin(rspamd.failFile, function (err, results) {
                 assert.ifError(err);
-                // console.log(results);
-                // naive bayes...
-                // assert.equal(results.fail.length, 1);
+                assert.equal(results.fail.length, 1);
                 done();
             });
         });
 
         it('passes a clean message', function (done) {
-            dspam.scanBin(cleanMsg, function (err, results) {
+            rspamd.scanBin(rspamd.passFile, function (err, results) {
                 assert.ifError(err);
+                // console.log(results);
                 assert.equal(results.pass.length, 1);
                 done();
             });
@@ -50,34 +44,33 @@ describe('dspam', function () {
     describe('TCP', function () {
 
         before(function (done) {
-            dspam.tcpListening(function (err, listening) {
+            rspamd.tcpListening(function (err, listening) {
                 if (err) return done(err);
                 done();
             });
         });
 
         it('pings', function (done) {
-            dspam.ping(null, dspam.cfg.net, function (err, result) {
+            rspamd.tcpAvailable(function (err, avail) {
                 assert.ifError(err);
-                assert.ok(result);
+                assert.ok(avail);
                 done();
             });
         });
 
-        it.skip('detects a spam message', function (done) {
-            dspam.scanTcp(spamMsg, function (err, results) {
+        it('detects a spam message', function (done) {
+            rspamd.scanTcp(rspamd.failFile, function (err, results) {
                 assert.ifError(err);
-                // console.log(result);
-                // silly naive bayes..., doesn't know any better...yet
-                // assert.equal(results.fail.length, 1);
-                assert.ok(result.raw);
-                done();
-            });
-        });
-
-        it('passes a clean message', function (done) {
-            dspam.scanTcp(cleanMsg, function (err, results) {
                 // console.log(results);
+                assert.equal(results.fail.length, 1);
+                done();
+            });
+        });
+
+        this.timeout(7000);
+        it('passes a clean message', function (done) {
+            rspamd.scanTcp(rspamd.passFile, function (err, results) {
+                // console.log(result);
                 assert.ifError(err);
                 assert.equal(results.pass.length, 1);
                 done();
@@ -88,24 +81,24 @@ describe('dspam', function () {
     describe.skip('unix socket', function () {
 
         before(function (done) {
-            dspam.socketFound(function (err, listening) {
+            rspamd.socketFound(function (err, listening) {
                 if (err) return done(err);
                 done();
             });
         });
 
-        it.skip('detects spam message', function (done) {
-            dspam.scanSocket(spamMsg, function (err, results) {
+        it('detects spam message', function (done) {
+            rspamd.scanSocket(rspamd.failFile, function (err, results) {
                 assert.ifError(err);
                 // console.log(result);
-                // dspam is naive when untrained, so it won't catch this
-                assert.equal(results.pass.length, 1);
+                assert.equal(results.fail.length, 1);
                 done();
             });
         });
 
         it('passes a clean message', function (done) {
-            dspam.scanSocket(cleanMsg, function (err, results) {
+            rspamd.scanSocket(rspamd.passFile, function (err, results) {
+                // console.log(result);
                 assert.ifError(err);
                 assert.equal(results.pass.length, 1);
                 done();
@@ -113,18 +106,18 @@ describe('dspam', function () {
         });
     });
 
-    describe('scan dispatch', function () {
+    describe.skip('scan dispatch', function () {
 
         before(function (done) {
-            dspam.isAvailable(function (err, available) {
+            rspamd.isAvailable(function (err, available) {
                 if (err) return done(err);
-                if (!available) return done(new Error('dspam not available'));
+                if (!available) return done(new Error('spam not available'));
                 done();
             });
         });
 
-        it.skip('scans spam', function (done) {
-            dspam.scan(spamMsg, function (err, results) {
+        it('scans spam', function (done) {
+            rspamd.scan(rspamd.failFile, function (err, results) {
                 assert.ifError(err);
                 assert.equal(results.fail.length, 1);
                 done();
@@ -132,7 +125,7 @@ describe('dspam', function () {
         });
 
         it('scans clean', function (done) {
-            dspam.scan(cleanMsg, function (err, results) {
+            rspamd.scan(rspamd.passFile, function (err, results) {
                 assert.ifError(err);
                 assert.equal(results.pass.length, 1);
                 done();
