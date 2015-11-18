@@ -1,20 +1,20 @@
 {
-  "name": "email-scanning-server",
-  "description": "Cloud enabled Email Scanning Server",
-  "version": "0.0.4",
+  "name": "ecsd",
+  "description": "Cloud enabled Email Content Scanner",
+  "version": "0.4.1",
   "private": false,
   "keywords": [
     "email",
     "antivirus",
     "spam filter"
   ],
-  "homepage": "https://github.com/cloud-ess/ess",
+  "homepage": "https://github.com/cloud-ecs/ecsd",
   "bugs": {
-    "url": "https://github.com/cloud-ess/ess/issues"
+    "url": "https://github.com/cloud-ecs/ecsd/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cloud-ess/ess.git"
+    "url": "https://github.com/cloud-ecs/ecsd.git"
   },
   "dependencies": {
     "async": "^1.5.0",
