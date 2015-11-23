@@ -6,6 +6,25 @@
 
 A web service that receives emails via HTTP and scans them with one or many filtering engines (antivirus, antispam, policy engines, etc.)
 
+## Content Scanners
+
+- [x] spamassassin
+- [x] rspamd
+- [x] dspam
+- [ ] messagesniffer
+- [ ] dcc
+- [ ] virustotal
+- [ ] fprot
+- [ ] f-secure,
+- [x] clamav
+- [ ] avg
+- [ ] eset
+- [ ] kaspersky
+- [ ] comodo
+- [x] bitdefender
+- [x] opendkim
+- [ ] opendmarc
+
 # API
 
 ## Request
@@ -21,7 +40,7 @@ Sent metadata about the connection / message as HTTP headers.
 ## Response
 
 The response is a JSON encoded array, with the request and response for
-each available scanner. 
+each available scanner.
 
 ```json
 [
@@ -57,9 +76,9 @@ matt; result=\"Innocent\"; class=\"Whitelisted\"; probability=0.0000; confidence
 ![status page image](https://cloud.githubusercontent.com/assets/261635/11162087/56acf54a-8a46-11e5-882c-5d8b5a704d71.png)
 
 
-[ci-img]: https://travis-ci.org/cloud-ess/ess.svg
-[ci-url]: https://travis-ci.org/cloud-ess/ess
-[cov-img]: https://codecov.io/github/cloud-ess/ess/coverage.svg
-[cov-url]: https://codecov.io/github/cloud-ess/ess
-[clim-img]: https://codeclimate.com/github/cloud-ess/ess/badges/gpa.svg
-[clim-url]: https://codeclimate.com/github/cloud-ess/ess
+[ci-img]: https://travis-ci.org/cloud-ecsd/ecsd.svg
+[ci-url]: https://travis-ci.org/cloud-ecsd/ecsd
+[cov-img]: https://codecov.io/github/cloud-ecsd/ecsd/coverage.svg
+[cov-url]: https://codecov.io/github/cloud-ecsd/ecsd
+[clim-img]: https://codeclimate.com/github/cloud-ecsd/ecsd/badges/gpa.svg
+[clim-url]: https://codeclimate.com/github/cloud-ecsd/ecsd
