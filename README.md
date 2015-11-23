@@ -76,9 +76,9 @@ matt; result=\"Innocent\"; class=\"Whitelisted\"; probability=0.0000; confidence
 ![status page image](https://cloud.githubusercontent.com/assets/261635/11162087/56acf54a-8a46-11e5-882c-5d8b5a704d71.png)
 
 
-[ci-img]: https://travis-ci.org/cloud-ecsd/ecsd.svg
-[ci-url]: https://travis-ci.org/cloud-ecsd/ecsd
-[cov-img]: https://codecov.io/github/cloud-ecsd/ecsd/coverage.svg
-[cov-url]: https://codecov.io/github/cloud-ecsd/ecsd
-[clim-img]: https://codeclimate.com/github/cloud-ecsd/ecsd/badges/gpa.svg
-[clim-url]: https://codeclimate.com/github/cloud-ecsd/ecsd
+[ci-img]: https://travis-ci.org/cloud-ecs/ecsd.svg
+[ci-url]: https://travis-ci.org/cloud-ecs/ecsd
+[cov-img]: https://codecov.io/github/cloud-ecs/ecsd/coverage.svg
+[cov-url]: https://codecov.io/github/cloud-ecs/ecsd
+[clim-img]: https://codeclimate.com/github/cloud-ecs/ecsd/badges/gpa.svg
+[clim-url]: https://codeclimate.com/github/cloud-ecs/ecsd
