@@ -26,34 +26,34 @@ module.exports = function(grunt) {
                     packageSpecific: {
                         bootstrap: {
                             files: [
-                                "dist/css/bootstrap.min.css",
-                                "dist/js/bootstrap.min.js"
+                                'dist/css/bootstrap.min.css',
+                                'dist/js/bootstrap.min.j'
                             ]
                         },
                         jquery: {
                             files: [
-                                "dist/jquery.min.js"
+                                'dist/jquery.min.js'
                             ]
                         },
-                        "html5-boilerplate": {
+                        'html5-boilerplate': {
                             files: [
-                                "404.html",
-                                "apple-touch-icon.png",
-                                "crossdomain.xml",
-                                "browserconfig.xml",
-                                "favicon.ico",
-                                "robots.txt"
+                                '404.html',
+                                'apple-touch-icon.png',
+                                'crossdomain.xml',
+                                'browserconfig.xml',
+                                'favicon.ico',
+                                'robots.txt'
                             ]
                         },
                         fontawesome: {
                             files: [
-                                "css/font-awesome.min.css",
-                                "fonts/FontAwesome.otf",
-                                "fonts/fontawesome-webfont.svg",
-                                "fonts/fontawesome-webfont.woff",
-                                "fonts/fontawesome-webfont.eot",
-                                "fonts/fontawesome-webfont.ttf",
-                                "fonts/fontawesome-webfont.woff2"
+                                'css/font-awesome.min.css',
+                                'fonts/FontAwesome.otf',
+                                'fonts/fontawesome-webfont.svg',
+                                'fonts/fontawesome-webfont.woff',
+                                'fonts/fontawesome-webfont.eot',
+                                'fonts/fontawesome-webfont.ttf',
+                                'fonts/fontawesome-webfont.woff2'
                             ]
                         }
                     }
@@ -103,5 +103,6 @@ module.exports = function(grunt) {
     });
 
     // Default task(s).
+    grunt.registerTask('lint', ['eslint']);
     grunt.registerTask('default', ['eslint', 'mochaTest']);
 };
