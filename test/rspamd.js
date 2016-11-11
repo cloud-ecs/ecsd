@@ -3,7 +3,7 @@
 var assert = require('assert');
 
 var rspamd = require('../lib/rspamd').createScanner();
-var isTravis = /worker/.test(require('os').hostname());
+var isTravis = /worker|testing/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
 before(function (done) {

@@ -8,7 +8,7 @@ var spam  = require('../lib/spamassassin').createScanner();
 var spamMsg = path.resolve('test/files/gtube.eml');
 var hamMsg  = path.resolve('test/files/clean.eml');
 
-var isTravis = /worker/.test(require('os').hostname());
+var isTravis = /worker|testing/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
 before(function (done) {
