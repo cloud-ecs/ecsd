@@ -7,6 +7,7 @@ var isTravis = /worker/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
 before(function (done) {
+    this.timeout(4000);
     rspamd.isFound(function (err, found) {
         done(err);
     });
@@ -45,8 +46,7 @@ describe('rspamd', function() {
 
         before(function (done) {
             rspamd.tcpListening(function (err, listening) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
@@ -82,8 +82,7 @@ describe('rspamd', function() {
 
         before(function (done) {
             rspamd.socketFound(function (err, listening) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
