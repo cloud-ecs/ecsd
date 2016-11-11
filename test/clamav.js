@@ -24,7 +24,7 @@ describe('clamav', function () {
         before(function (done) {
             clamav.binAvailable(function (err, bin) {
                 if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
@@ -52,8 +52,7 @@ describe('clamav', function () {
 
         before(function (done) {
             clamav.tcpListening(function (err, listening) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
@@ -81,7 +80,7 @@ describe('clamav', function () {
         before(function (done) {
             clamav.socketFound(function (err, listening) {
                 if (err) return done(err);
-                done();
+                done(err);
             });
         });
 

@@ -24,8 +24,7 @@ describe('spamassassin', function () {
 
         before(function (done) {
             spam.binFound(function (err, bin) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
@@ -51,8 +50,7 @@ describe('spamassassin', function () {
 
         before(function (done) {
             spam.tcpListening(function (err, listening) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
@@ -87,8 +85,7 @@ describe('spamassassin', function () {
 
         before(function (done) {
             spam.socketFound(function (err, listening) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 

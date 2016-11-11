@@ -14,7 +14,7 @@ describe('detect-cli', function () {
 
     it('does not find the bin "does-not-ever-exist"', function (done) {
         findBin('does-not-ever-exist', [], function (foundBin) {
-        // console.log(foundBin);
+            // console.log(foundBin);
             assert.equal(foundBin, undefined);
             done();
         });

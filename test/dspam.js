@@ -23,8 +23,7 @@ describe('dspam', function () {
 
         before(function (done) {
             dspam.binFound(function (err, bin) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
@@ -51,8 +50,7 @@ describe('dspam', function () {
 
         before(function (done) {
             dspam.tcpListening(function (err, listening) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
@@ -89,8 +87,7 @@ describe('dspam', function () {
 
         before(function (done) {
             dspam.socketFound(function (err, listening) {
-                if (err) return done(err);
-                done();
+                done(err);
             });
         });
 
