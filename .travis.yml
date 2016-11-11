@@ -24,7 +24,7 @@ addons:
       - opendkim
       - spamassassin
       - dspam
-      - rspamd
+#     - rspamd (not yet...)
 
 before_install:
   - sudo apt-get update -qq
