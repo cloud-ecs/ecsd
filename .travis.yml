@@ -29,11 +29,12 @@ addons:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y opendkim --force-yes
-# - sudo apt-get install -y dspam --force-yes
 # - sudo test/install-spamassassin.sh
-# - sudo test/install-clamav.sh
 
-#before_script:
+before_script:
+  - sudo test/helpers/install-clamav.sh
+  - sudo test/helpers/install-dspam.sh
+
 #script:
 
 after_success:
@@ -44,7 +45,5 @@ after_success:
 
 after_script:
   - sudo test/helpers/install-spamassassin.sh
-  - sudo test/helpers/install-clamav.sh
-  - sudo test/helpers/install-dspam.sh
 
 sudo: required
