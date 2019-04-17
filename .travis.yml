@@ -18,12 +18,12 @@ services:
 addons:
   apt:
     packages:
-      - clamav-freshclam
-      - clamav-daemon
-      - opendkim-tools
+#      - clamav-freshclam
+#      - clamav-daemon
+#      - opendkim-tools
       - opendkim
       - spamassassin
-      - dspam
+#      - dspam
       - rspamd
 
 before_install:
@@ -37,13 +37,13 @@ before_install:
 #script:
 
 after_success:
-  - npm install istanbul codecov.io
+#  - npm install istanbul codecov.io
   - sudo test/helpers/install-spamassassin.sh
   - sudo test/helpers/install-clamav.sh
   - sudo test/helpers/install-dspam.sh
 # - sudo test/helpers/install-rspamd.sh  (not available on Ubuntu?)
-  - NODE_ENV=cov ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec
-  - cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js
+#  - NODE_ENV=cov ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec
+#  - cat ./coverage/coverage.json | ./node_modules/.bin/codecov
 
 #after_script:
 

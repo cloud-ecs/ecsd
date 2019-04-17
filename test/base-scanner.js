@@ -1,9 +1,9 @@
 'use strict';
 
-var assert = require('assert');
+const assert = require('assert');
 
-var BaseScanner = require('../lib/base-scanner');
-var base = new BaseScanner('base-test');
+const BaseScanner = require('../lib/base-scanner');
+const base = new BaseScanner('base-test');
 
 describe('base-scanner', function () {
     it('exports a function', function (done) {
@@ -81,4 +81,4 @@ describe('base-scanner', function () {
             assert.equal(typeof base.scanSocket, 'function');
         });
     });
-});
+})

@@ -1,14 +1,14 @@
 'use strict';
 
-var assert = require('assert');
-var path   = require('path');
+const assert = require('assert');
+const path   = require('path');
 
-var spam  = require('../lib/spamassassin').createScanner();
+const spam  = require('../lib/spamassassin').createScanner();
 
-var spamMsg = path.resolve('test/files/gtube.eml');
-var hamMsg  = path.resolve('test/files/clean.eml');
+const spamMsg = path.resolve('test/files/gtube.eml');
+const hamMsg  = path.resolve('test/files/clean.eml');
 
-var isTravis = /worker/.test(require('os').hostname());
+const isTravis = /worker|testing/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
 before(function (done) {
@@ -24,8 +24,7 @@ describe('spamassassin', function () {
 
         before(function (done) {
             spam.binFound((err, bin) => {
-                if (err) return done(err);
-                done()
+                done(err)
             })
         })
 
