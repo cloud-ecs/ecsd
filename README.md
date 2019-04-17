@@ -15,7 +15,7 @@ A web service that receives emails via HTTP and scans them with one or many filt
 - [ ] dcc
 - [ ] virustotal
 - [ ] fprot
-- [ ] f-secure,
+- [ ] f-secure
 - [x] clamav
 - [ ] avg
 - [ ] eset

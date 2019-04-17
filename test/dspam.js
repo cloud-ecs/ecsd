@@ -13,7 +13,8 @@ console.log(require('os').hostname());
 
 before(function (done) {
     dspam.isFound(function (err, found) {
-        done(err);
+        if (err) console.error(err);
+        done();
     });
 });
 

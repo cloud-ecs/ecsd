@@ -8,6 +8,7 @@ if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
 before(function (done) {
     rspamd.isFound(function (err, found) {
+        if (err) console.error(err.message);
         done(err);
     });
 });

@@ -51,10 +51,10 @@
 $('#navbartop').load('/navbar.html');
 
 jQuery.getJSON( '/status/scannersAll', function (data) {
-  var scanAll = data.scanners;
-  for (var i = 0; i < scanAll.length; i++) {
-    var s = scanAll[i];
-    var newRow = $('#status-template').clone().attr('id', 'status-' + s);
+  const scanAll = data.scanners;
+  for (let i = 0; i < scanAll.length; i++) {
+    const s = scanAll[i];
+    const newRow = $('#status-template').clone().attr('id', 'status-' + s);
     newRow.children(':first').html(s);
     newRow.data('name', s);
     $('#status-all').append(newRow);
@@ -62,13 +62,13 @@ jQuery.getJSON( '/status/scannersAll', function (data) {
 
   jQuery.getJSON('/status/scannersAvailable', function (data) {
     // console.log(data);
-    var scanAvail = data.scanners;
-    for (var i = 0; i < scanAll.length; i++) {
-      var t = scanAll[i];
-      var statusDiv = $('#status-' + t).children(':nth-child(2)');
-      if (scanAvail[scanAll[i]]) {
-        var ifType = scanAvail[scanAll[i]].available.any;
-        statusDiv.html('<p class="text-success">' + ifType + '</p>');
+    const scanAvail = data.scanners;
+    for (let i = 0; i < scanAll.length; i++) {
+      const t = scanAll[i];
+      const statusDiv = $('#status-' + t).children(':nth-child(2)');
+      if (scanAvail[t]) {
+        const ifType = scanAvail[t].available.any;
+        statusDiv.html(`<p class="text-success">${ifType}</p>`);
       }
       else {
         statusDiv.html('<p class="text-danger">n.a.</p>');
