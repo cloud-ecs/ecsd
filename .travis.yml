@@ -18,13 +18,13 @@ services:
 addons:
   apt:
     packages:
-#      - clamav-freshclam
-#      - clamav-daemon
-#      - opendkim-tools
+      - clamav-freshclam
+      - clamav-daemon
+      - opendkim-tools
       - opendkim
       - spamassassin
 #      - dspam
-      - rspamd
+#      - rspamd
 
 before_install:
   - sudo apt-get update -qq
