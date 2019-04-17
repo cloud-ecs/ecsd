@@ -1,7 +1,7 @@
 {
   "name": "ecsd",
   "description": "Cloud enabled Email Content Scanner",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": false,
   "keywords": [
     "email",
@@ -29,14 +29,6 @@
     "smtp-connection": "^1.3.1"
   },
   "devDependencies": {
-    "grunt": "*",
-    "grunt-bower": "*",
-    "grunt-bower-install-simple": "*",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-watch": "*",
-    "grunt-eslint": "*",
-    "grunt-mocha-test": "*",
-    "grunt-nodemon": "*",
     "mocha": "*",
     "nodemon": "*",
     "open": "*",
@@ -45,6 +37,7 @@
   "license": "BSD-2-Clause",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test mocha"
+    "lint": "node ./node_modules/.bin/eslint *.js lib/*.js test/*.js routes/*.js",
+    "test": "NODE_ENV=test ./node_modules/.bin/_mocha"
   }
 }
