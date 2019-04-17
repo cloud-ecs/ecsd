@@ -22,7 +22,7 @@ addons:
       - clamav-daemon
       - opendkim-tools
       - opendkim
-      - spamassassin
+#      - spamassassin
 #      - dspam
 #      - rspamd
 
