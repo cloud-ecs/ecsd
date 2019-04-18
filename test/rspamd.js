@@ -6,20 +6,14 @@ var rspamd = require('../lib/rspamd').createScanner();
 var isTravis = /worker/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
-describe.skip('rspamd', function() {
+describe('rspamd', function() {
 
-    before(function (done) {
-        this.timeout(4000)
-        rspamd.isFound((err, found) => {
-            if (err) console.error(err.message)
-            done(err)
-        })
-    })
-
-    describe.skip('rspamc cli', function () {
+    describe('rspamc cli', function () {
 
         before(function (done) {
             rspamd.binFound((err, bin) => {
+                if (err) console.error(err.message)
+                if (!bin) this.skip()
                 done(err)
             })
         })
@@ -46,7 +40,9 @@ describe.skip('rspamd', function() {
 
         before(function (done) {
             rspamd.tcpListening((err, listening) => {
-                done(err)
+                if (err) console.error(err.message)
+                if (!listening) this.skip()
+                done()
             })
         })
 
@@ -78,11 +74,13 @@ describe.skip('rspamd', function() {
         })
     })
 
-    describe.skip('unix socket', function () {
+    describe('unix socket', function () {
 
         before(function (done) {
             rspamd.socketFound((err, listening) => {
-                done(err)
+                if (err) console.error(err.message)
+                if (!listening) this.skip()
+                done()
             })
         })
 
@@ -109,8 +107,8 @@ describe.skip('rspamd', function() {
 
         before(function (done) {
             rspamd.isAvailable((err, available) => {
-                if (err) return done(err);
-                if (!available) return done(new Error('spam not available'));
+                if (err) console.error(err.message)
+                if (!available) this.skip()
                 done()
             })
         })

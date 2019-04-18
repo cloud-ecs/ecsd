@@ -11,19 +11,15 @@ var cleanMsg = path.resolve('test/files/clean.eml');
 if (/worker/.test(require('os').hostname())) return;
 console.log(require('os').hostname());
 
-before(function (done) {
-    clamav.isFound((err, found) => {
-        done(err)
-    })
-})
-
-describe.skip('clamav', function () {
+describe('clamav', function () {
 
     describe('clamdscan', function () {
 
         before(function (done) {
             clamav.binAvailable((err, bin) => {
-                done(err)
+                if (err) console.error(err.message)
+                if (!bin) this.skip()
+                done()
             })
         })
 
@@ -51,7 +47,8 @@ describe.skip('clamav', function () {
 
         before(function (done) {
             clamav.tcpListening((err, listening) => {
-                if (err) return done(err)
+                if (err) console.error(err.message)
+                if (!listening) this.skip()
                 done()
             })
         })
@@ -79,7 +76,9 @@ describe.skip('clamav', function () {
 
         before(function (done) {
             clamav.socketFound((err, listening) => {
-                done(err)
+                if (err) console.error(err.message)
+                if (!listening) this.skip()
+                done()
             })
         })
 
@@ -105,9 +104,9 @@ describe.skip('clamav', function () {
     describe('scan dispatch', function () {
 
         before(function (done) {
-            clamav.isAvailable(function (err, available) {
-                if (err) return done(err)
-                if (!available) return done(new Error('clamav not available'))
+            clamav.isAvailable((err, available) => {
+                if (err) console.error(err.message)
+                if (!available) this.skip()
                 done()
             })
         })
@@ -131,4 +130,3 @@ describe.skip('clamav', function () {
         })
     })
 })
-

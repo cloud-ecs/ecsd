@@ -11,20 +11,15 @@ const hamMsg  = path.resolve('test/files/clean.eml');
 const isTravis = /worker|testing/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
-before(function (done) {
-    spam.isFound((err, found) => {
-        // console.log(arguments);
-        done(err);
-    })
-})
-
-describe.skip('spamassassin', function () {
+describe('spamassassin', function () {
 
     describe('spamc cli', function () {
 
         before(function (done) {
             spam.binFound((err, bin) => {
-                done(err)
+                if (err) console.error(`\t${err.message}`)
+                if (!bin) this.skip()
+                done()
             })
         })
 
@@ -50,7 +45,9 @@ describe.skip('spamassassin', function () {
 
         before(function (done) {
             spam.tcpListening((err, listening) => {
-                done(err)
+                if (err) console.error(`\t${err.message}`)
+                if (!listening) this.skip()
+                done()
             })
         })
 
@@ -85,7 +82,9 @@ describe.skip('spamassassin', function () {
 
         before(function (done) {
             spam.socketFound((err, listening) => {
-                done(err)
+                if (err) console.error(`\t${err.message}`)
+                if (!listening) this.skip()
+                done()
             })
         })
 
@@ -111,9 +110,9 @@ describe.skip('spamassassin', function () {
     describe('scan dispatch', function () {
 
         before(function (done) {
-            spam.isAvailable(function (err, available) {
-                if (err) return done(err)
-                if (!available) return done(new Error('spam not available'))
+            spam.isAvailable((err, available) => {
+                if (err) console.error(`\t${err.message}`)
+                if (!available) this.skip()
                 done()
             })
         })

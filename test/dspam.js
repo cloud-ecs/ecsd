@@ -11,23 +11,19 @@ const cleanMsg = path.resolve('test/files/clean.eml');
 if (/worker/.test(require('os').hostname())) return;
 console.log(require('os').hostname());
 
-before(function (done) {
-    dspam.isFound(function (err, found) {
-        done(err)
-    })
-})
-
-describe.skip('dspam', function () {
+describe('dspam', function () {
 
     describe('dspam cli', function () {
 
         before(function (done) {
-            dspam.binFound(function (err, bin) {
-                done(err)
+            dspam.binFound((err, bin) => {
+                if (err) console.error(err.message)
+                if (!bin) this.skip()
+                done()
             })
         })
 
-        it.skip('detects spam message', function (done) {
+        it('detects spam message', function (done) {
             dspam.scanBin(spamMsg, (err, results) => {
                 assert.ifError(err)
                 // console.log(results);
@@ -50,7 +46,9 @@ describe.skip('dspam', function () {
 
         before(function (done) {
             dspam.tcpListening((err, listening) => {
-                done(err)
+                if (err) console.error(err.message)
+                if (!listening) this.skip()
+                done()
             })
         })
 
@@ -83,11 +81,13 @@ describe.skip('dspam', function () {
         })
     })
 
-    describe.skip('unix socket', function () {
+    describe('unix socket', function () {
 
         before(function (done) {
             dspam.socketFound((err, listening) => {
-                done(err)
+                if (err) console.error(err.message)
+                if (!listening) this.skip()
+                done()
             })
         })
 
@@ -113,9 +113,9 @@ describe.skip('dspam', function () {
     describe('scan dispatch', function () {
 
         before(function (done) {
-            dspam.isAvailable(function (err, available) {
-                if (err) return done(err)
-                if (!available) return done(new Error('dspam not available'))
+            dspam.isAvailable((err, available) => {
+                if (err) console.error(err.message)
+                if (!available) this.skip()
                 done()
             })
         })
