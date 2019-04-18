@@ -1,0 +1,73 @@
+version: 2.1
+
+commands:
+  install_spamassassin:
+    description: "Install SpamAssassin"
+    steps:
+      - run: sudo apt-get install -y spamassassin
+      - run: sudo sed -i.bak -e 's/ENABLED.*/ENABLED=1/' /etc/default/spamassassin
+      - run: sudo invoke-rc.d spamassassin start
+  install_dspam:
+    description: "Install DSPAM"
+    steps:
+      - run: sudo apt-get install -y dspam --force-yes
+      - run: sudo sed -i.bak 's/ENABLED.*/ENABLED=1/' /etc/default/dspam
+      - run: sudo invoke-rc.d dspam start
+  install_rspamd:
+    description: "Install rspamd"
+    steps:
+      - run: sudo apt-get install -y lsb-release coreutils
+      - run: wget -O- https://rspamd.com/apt-stable/gpg.key | sudo apt-key add -
+      # - run: mkdir -p /etc/apt/sources.list.d
+      - run: echo "deb [arch=amd64] http://rspamd.com/apt-stable/ $(lsb_release -c -s) main" | sudo tee /etc/apt/sources.list.d/rspamd.list
+      - run: echo "deb-src [arch=amd64] http://rspamd.com/apt-stable/ $(lsb_release -c -s) main" | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+      - run: cat /etc/apt/sources.list.d/rspamd.list
+      - run: sudo apt-get update
+      - run: sudo apt-get --no-install-recommends install -y rspamd
+      - run: sudo invoke-rc.d rspamd defaults
+      - run: sudo invoke-rc.d rspamd start
+  install_clamav:
+    description: "Install clamav"
+    steps:
+      - run: sudo apt-get install -y clamav clamav-base clamav-daemon libclamav7 clamav-freshclam
+      - run: sudo /usr/bin/freshclam
+      - run: sudo invoke-rc.d clamav-daemon start
+  install_opendkim:
+    description: "Install OpenDKIM"
+    steps:
+      - run: sudo apt-get install -y opendkim --force-yes
+
+jobs:
+  test_node8:
+    docker:
+      - image: circleci/node:8
+    steps:
+      # - install_spamassassin
+      # - install_dspam
+      # - install_rspamd
+      # - install_clamav
+      - install_opendkim
+      - checkout
+      - run: npm install
+      - run: npm test
+
+  test_node10:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm test
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      # - build
+      - test_node8
+      # - test_node8:
+      #     requires:
+      #       - build
+      # - test_node10:
+        # requires:
+          # - build

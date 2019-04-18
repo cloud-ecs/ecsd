@@ -17,7 +17,7 @@ before(function (done) {
     })
 })
 
-describe('clamav', function () {
+describe.skip('clamav', function () {
 
     describe('clamdscan', function () {
 

@@ -17,7 +17,7 @@ before(function (done) {
     })
 })
 
-describe('dspam', function () {
+describe.skip('dspam', function () {
 
     describe('dspam cli', function () {
 

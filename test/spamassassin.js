@@ -18,7 +18,7 @@ before(function (done) {
     })
 })
 
-describe('spamassassin', function () {
+describe.skip('spamassassin', function () {
 
     describe('spamc cli', function () {
 

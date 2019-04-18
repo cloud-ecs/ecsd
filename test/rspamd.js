@@ -6,7 +6,7 @@ var rspamd = require('../lib/rspamd').createScanner();
 var isTravis = /worker/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
-describe('rspamd', function() {
+describe.skip('rspamd', function() {
 
     before(function (done) {
         this.timeout(4000)
