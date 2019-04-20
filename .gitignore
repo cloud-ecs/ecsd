@@ -5,3 +5,4 @@ npm-debug.log
 spool
 ess.sublime-*
 html/vendor
+package-lock.json

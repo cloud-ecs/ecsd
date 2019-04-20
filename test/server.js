@@ -1,17 +1,17 @@
 'use strict';
 
-var supertest = require('supertest');
-var express   = require('express');
-// var assert    = require('assert');
+const supertest = require('supertest');
+const express   = require('express');
+// const assert    = require('assert');
 
-var logger    = require('../lib/logger');
-var app       = express();
+const logger    = require('../lib/logger');
+const app       = express();
 app.enable('trust proxy');
 
 require('../routes/scan').public(app);
 
 describe('routes, scan', function () {
-    var agent = supertest.agent(app);
+    const agent = supertest.agent(app);
 
     describe('GET /scan', function() {
         it('responds with scan form', function(done) {
@@ -21,8 +21,8 @@ describe('routes, scan', function () {
                 .expect('Content-Type', /html/)
                 .expect(/file/)
                 .expect(200, done);
-        });
-    });
+        })
+    })
 
     describe('POST /scan', function() {
         this.timeout(3000);
@@ -42,6 +42,6 @@ describe('routes, scan', function () {
                 // .expect('Content-Type', /json/)
                 // .expect(/file/)
                 .expect(200, done);
-        });
-    });
-});
+        })
+    })
+})

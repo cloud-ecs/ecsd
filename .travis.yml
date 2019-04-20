@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-    - "4.2"
-    - "5.0"
+    - "8"
+    - "10"
 
 #os:
 #    - linux
@@ -10,7 +10,7 @@ node_js:
 matrix:
     allow_failures:
 #        - os: osx
-#        - node_js: 5.0
+#        - node_js: "8"
     fast_finish: true
 
 services:
@@ -22,29 +22,28 @@ addons:
       - clamav-daemon
       - opendkim-tools
       - opendkim
-      - spamassassin
-      - dspam
-      - rspamd
+#      - spamassassin
+#      - dspam
+#      - rspamd
 
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y opendkim --force-yes
-# - sudo apt-get install -y dspam --force-yes
-# - sudo test/install-spamassassin.sh
-# - sudo test/install-clamav.sh
 
-#before_script:
+before_script:
+  - sudo test/helpers/install-clamav.sh
+  - sudo test/helpers/install-dspam.sh
+# - sudo test/helpers/install-rspamd.sh
+  - sudo test/helpers/install-spamassassin.sh
+
 #script:
 
 after_success:
-  - npm install istanbul codecov.io
-  - sudo test/helpers/install-spamassassin.sh
-  - sudo test/helpers/install-clamav.sh
-  - sudo test/helpers/install-dspam.sh
+#  - npm install istanbul codecov.io
 # - sudo test/helpers/install-rspamd.sh  (not available on Ubuntu?)
-  - NODE_ENV=cov ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec
-  - cat ./coverage/coverage.json | ./node_modules/codecov.io/bin/codecov.io.js
+#  - NODE_ENV=cov ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec
+#  - cat ./coverage/coverage.json | ./node_modules/.bin/codecov
 
-#after_script:
+after_script:
 
 sudo: required

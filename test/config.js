@@ -1,8 +1,8 @@
 'use strict';
 
-var assert  = require('assert');
+const assert  = require('assert');
 
-var config  = require('../lib/config');
+const config  = require('../lib/config');
 
 describe('cloud-email-scanner', function () {
 
@@ -10,13 +10,13 @@ describe('cloud-email-scanner', function () {
         it('has loadConfig function', function (done) {
             assert.equal(typeof config.loadConfig, 'function');
             done();
-        });
+        })
 
         it('finds cloud-email-scanner.ini', function (done) {
-            var cfg = config.loadConfig();
+            const cfg = config.loadConfig();
             assert.ok(cfg);
             done();
-        });
+        })
 
         it('config has expected sections', function (done) {
             config.loadConfig();
@@ -24,6 +24,6 @@ describe('cloud-email-scanner', function () {
                 assert.ok(config.cfg[s]);
             });
             done();
-        });
-    });
-});
+        })
+    })
+})
