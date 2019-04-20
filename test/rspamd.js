@@ -1,5 +1,7 @@
 'use strict';
 
+process.env.NODE_ENV = 'test';
+
 var assert = require('assert');
 
 var rspamd = require('../lib/rspamd').createScanner();
@@ -103,7 +105,7 @@ describe('rspamd', function() {
         })
     })
 
-    describe.skip('scan dispatch', function () {
+    describe('scan dispatch', function () {
 
         before(function (done) {
             rspamd.isAvailable((err, available) => {

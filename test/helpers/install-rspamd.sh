@@ -6,5 +6,5 @@ echo "deb-src [arch=amd64] http://rspamd.com/apt-stable/ $(lsb_release -c -s) ma
 sudo apt-get update
 sudo apt-get --no-install-recommends install -y rspamd
 
-sudo invoke-rc.d rspamd defaults
-sudo invoke-rc.d rspamd start
+sudo service rspamd defaults
+sudo service rspamd start
