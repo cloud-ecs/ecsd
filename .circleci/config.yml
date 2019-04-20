@@ -6,32 +6,31 @@ commands:
     steps:
       - run: sudo apt-get install -y spamassassin
       - run: sudo sed -i.bak -e 's/ENABLED.*/ENABLED=1/' /etc/default/spamassassin
-      - run: sudo invoke-rc.d spamassassin start
+      - run: sudo service spamassassin start
   install_dspam:
     description: "Install DSPAM"
     steps:
       - run: sudo apt-get install -y dspam --force-yes
       - run: sudo sed -i.bak 's/ENABLED.*/ENABLED=1/' /etc/default/dspam
-      - run: sudo invoke-rc.d dspam start
+      - run: sudo service dspam start
   install_rspamd:
     description: "Install rspamd"
     steps:
       - run: sudo apt-get install -y lsb-release coreutils
       - run: wget -O- https://rspamd.com/apt-stable/gpg.key | sudo apt-key add -
-      # - run: mkdir -p /etc/apt/sources.list.d
       - run: echo "deb [arch=amd64] http://rspamd.com/apt-stable/ $(lsb_release -c -s) main" | sudo tee /etc/apt/sources.list.d/rspamd.list
       - run: echo "deb-src [arch=amd64] http://rspamd.com/apt-stable/ $(lsb_release -c -s) main" | sudo tee -a /etc/apt/sources.list.d/rspamd.list
       - run: cat /etc/apt/sources.list.d/rspamd.list
       - run: sudo apt-get update
       - run: sudo apt-get --no-install-recommends install -y rspamd
-      - run: sudo invoke-rc.d rspamd defaults
-      - run: sudo invoke-rc.d rspamd start
+      - run: sudo service rspamd defaults
+      - run: sudo service rspamd start
   install_clamav:
     description: "Install clamav"
     steps:
       - run: sudo apt-get install -y clamav clamav-base clamav-daemon libclamav7 clamav-freshclam
       - run: sudo /usr/bin/freshclam
-      - run: sudo invoke-rc.d clamav-daemon start
+      - run: sudo service clamav-daemon start
   install_opendkim:
     description: "Install OpenDKIM"
     steps:
@@ -42,7 +41,7 @@ jobs:
     docker:
       - image: circleci/node:8
     steps:
-      # - install_spamassassin
+      - install_spamassassin
       # - install_dspam
       # - install_rspamd
       - install_clamav
