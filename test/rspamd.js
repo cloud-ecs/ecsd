@@ -2,10 +2,10 @@
 
 process.env.NODE_ENV = 'test';
 
-var assert = require('assert');
+const assert = require('assert');
 
-var rspamd = require('../lib/rspamd').createScanner();
-var isTravis = /worker/.test(require('os').hostname());
+const rspamd = require('../lib/rspamd').createScanner();
+const isTravis = /worker/.test(require('os').hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
 describe('rspamd', function() {
@@ -105,7 +105,8 @@ describe('rspamd', function() {
         })
     })
 
-    describe('scan dispatch', function () {
+    describe.skip('scan dispatch', function () {
+        this.timeout(4000)
 
         before(function (done) {
             rspamd.isAvailable((err, available) => {

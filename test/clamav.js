@@ -1,12 +1,12 @@
 'use strict';
 
-var assert = require('assert');
-var path   = require('path');
+const assert = require('assert');
+const path   = require('path');
 
-var clamav = require('../lib/clamav').createScanner();
+const clamav = require('../lib/clamav').createScanner();
 
-var virusMsg = path.resolve('test/files/eicar.eml');
-var cleanMsg = path.resolve('test/files/clean.eml');
+const virusMsg = path.resolve('test/files/eicar.eml');
+const cleanMsg = path.resolve('test/files/clean.eml');
 
 if (/worker/.test(require('os').hostname())) return;
 console.log(require('os').hostname());

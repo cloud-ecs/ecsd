@@ -13,7 +13,7 @@ describe('cloud-email-scanner', function () {
         })
 
         it('finds cloud-email-scanner.ini', function (done) {
-            var cfg = config.loadConfig();
+            const cfg = config.loadConfig();
             assert.ok(cfg);
             done();
         })

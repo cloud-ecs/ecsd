@@ -1,13 +1,13 @@
 'use strict';
 
-var assert = require('assert');
-var path   = require('path');
+const assert = require('assert');
+const path   = require('path');
 
-var opendkim = require('../lib/opendkim').createScanner();
+const opendkim = require('../lib/opendkim').createScanner();
 
-var signedValidMsg = path.resolve('test/files/dkim-valid.eml');
-var signedInvalidMsg = path.resolve('test/files/dkim-invalid.eml');
-var unsignedMsg = path.resolve('test/files/clean.eml');
+const signedValidMsg = path.resolve('test/files/dkim-valid.eml');
+const signedInvalidMsg = path.resolve('test/files/dkim-invalid.eml');
+const unsignedMsg = path.resolve('test/files/clean.eml');
 
 describe('opendkim', function () {
     this.timeout(3000);

@@ -1,7 +1,7 @@
 'use strict';
 
-var assert     = require('assert');
-var findSocket = require('../lib/detect-socket').findSocket;
+const assert     = require('assert');
+const findSocket = require('../lib/detect-socket').findSocket;
 
 describe('detect-socket', function () {
 

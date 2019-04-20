@@ -1,7 +1,7 @@
 'use strict';
 
-var assert  = require('assert');
-var findTcp = require('../lib/detect-tcp').findTcp;
+const assert  = require('assert');
+const findTcp = require('../lib/detect-tcp').findTcp;
 
 describe('detect-tcp', function () {
 
