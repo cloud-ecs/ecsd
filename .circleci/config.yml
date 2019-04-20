@@ -45,7 +45,7 @@ jobs:
       # - install_spamassassin
       # - install_dspam
       # - install_rspamd
-      # - install_clamav
+      - install_clamav
       - install_opendkim
       - checkout
       - run: npm install
