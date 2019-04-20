@@ -33,7 +33,7 @@ before_install:
 before_script:
   - sudo test/helpers/install-clamav.sh
   - sudo test/helpers/install-dspam.sh
-  - sudo test/helpers/install-rspamd.sh
+# - sudo test/helpers/install-rspamd.sh
   - sudo test/helpers/install-spamassassin.sh
 
 #script:
