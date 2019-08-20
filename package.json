@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "mocha": "*",
+    "eslint": "*",
     "nodemon": "*",
     "open": "*",
     "supertest": "*"
