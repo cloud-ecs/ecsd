@@ -8,15 +8,10 @@ const findTcp = require('../lib/detect-tcp').findTcp;
 describe('detect-tcp', () => {
 
     it.skip('detects a listening port', async () => {
-        const listening = await new Promise((resolve, reject) =>
-            findTcp({ port: 3310 }, (err, res) => (err ? reject(err) : resolve(res))));
-        assert.ok(listening);
+        assert.ok(await findTcp({ port: 3310 }));
     });
 
     it('detects a non-listening port', async () => {
-        const { err, listening } = await new Promise((resolve) =>
-            findTcp({ port: 3311 }, (err, listening) => resolve({ err, listening })));
-        assert.ok(err);
-        assert.equal(listening, undefined);
+        await assert.rejects(() => findTcp({ port: 3311 }));
     });
 });

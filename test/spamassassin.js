@@ -1,7 +1,6 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const os     = require('node:os');
 const path   = require('node:path');
 const { describe, it, before } = require('node:test');
 
@@ -10,95 +9,89 @@ const spam = require('../lib/spamassassin').createScanner();
 const spamMsg = path.resolve('test/files/gtube.eml');
 const hamMsg  = path.resolve('test/files/clean.eml');
 
-const isTravis = /worker|testing/.test(os.hostname());
-if (process.env.NODE_ENV !== 'cov' && isTravis) return;
-
-const probe = (fn) => new Promise((resolve) => fn((err, res) => resolve(err ? false : res)));
-const call  = (fn) => new Promise((resolve, reject) => fn((err, res) => (err ? reject(err) : resolve(res))));
-
 describe('spamassassin', () => {
 
     describe('spamc cli', () => {
         let avail;
-        before(async () => { avail = await probe((cb) => spam.binFound(cb)); });
+        before(async () => { avail = await spam.binFound().catch(() => false); });
 
         it('finds gtube spam message', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scanBin(spamMsg, cb));
+            const results = await spam.scanBin(spamMsg);
             assert.equal(results.fail.length, 1);
         });
 
         it('passes a clean message', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scanBin(hamMsg, cb));
+            const results = await spam.scanBin(hamMsg);
             assert.equal(results.pass.length, 1);
         });
     });
 
     describe('TCP', () => {
         let avail;
-        before(async () => { avail = await probe((cb) => spam.tcpListening(cb)); });
+        before(async () => { avail = await spam.tcpListening().catch(() => false); });
 
         it('pings', async (t) => {
             if (!avail) return t.skip();
-            assert.ok(await call((cb) => spam.tcpAvailable(cb)));
+            assert.ok(await spam.tcpAvailable());
         });
 
         it('detects a spam message', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scanTcp(spamMsg, cb));
+            const results = await spam.scanTcp(spamMsg);
             assert.equal(results.fail.length, 1);
         });
 
         it('passes a clean message', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scanTcp(hamMsg, cb));
+            const results = await spam.scanTcp(hamMsg);
             assert.equal(results.pass.length, 1);
         });
     });
 
     describe('unix socket', () => {
         let avail;
-        before(async () => { avail = await probe((cb) => spam.socketFound(cb)); });
+        before(async () => { avail = await spam.socketFound().catch(() => false); });
 
         it('detects spam message', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scanSocket(spamMsg, cb));
+            const results = await spam.scanSocket(spamMsg);
             assert.equal(results.fail.length, 1);
         });
 
         it('passes a clean message', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scanSocket(hamMsg, cb));
+            const results = await spam.scanSocket(hamMsg);
             assert.equal(results.pass.length, 1);
         });
     });
 
     describe('scan dispatch', () => {
         let avail;
-        before(async () => { avail = await probe((cb) => spam.isAvailable(cb)); });
+        before(async () => { avail = await spam.isAvailable().catch(() => false); });
 
         it('scans spam', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scan(spamMsg, cb));
+            const results = await spam.scan(spamMsg);
             assert.equal(results.fail.length, 1);
         });
 
         it('scans clean', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scan(hamMsg, cb));
+            const results = await spam.scan(hamMsg);
             assert.equal(results.pass.length, 1);
         });
 
         it('scans spam concurrently', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scan(spamMsg, cb));
+            const results = await spam.scan(spamMsg);
             assert.equal(results.fail.length, 1);
         });
 
         it('scans clean concurrently', async (t) => {
             if (!avail) return t.skip();
-            const results = await call((cb) => spam.scan(hamMsg, cb));
+            const results = await spam.scan(hamMsg);
             assert.equal(results.pass.length, 1);
         });
     });
