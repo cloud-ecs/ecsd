@@ -9,12 +9,16 @@ sudo apt-get install -y clamav clamav-daemon
 sudo systemctl stop clamav-freshclam || true
 sudo freshclam
 
-# the tests reach clamd over TCP 3310 in addition to the unix socket
-if ! grep -q '^TCPSocket' /etc/clamav/clamd.conf; then
-    printf 'TCPSocket 3310\nTCPAddr 127.0.0.1\n' | sudo tee -a /etc/clamav/clamd.conf
-fi
-
-sudo systemctl restart clamav-daemon
+# 24.04 socket-activates clamd and it ignores the TCPSocket directive in
+# clamd.conf in that mode. Add the TCP listener to the *socket* unit instead so
+# systemd hands clamd the extra fd. clamd is slow to load the full DB before it
+# starts serving, so readiness is best-effort (see wait-for-scanners.sh).
+sudo mkdir -p /etc/systemd/system/clamav-daemon.socket.d
+printf '[Socket]\nListenStream=127.0.0.1:3310\n' \
+    | sudo tee /etc/systemd/system/clamav-daemon.socket.d/tcp.conf
+sudo systemctl daemon-reload
+sudo systemctl restart clamav-daemon.socket
+sudo systemctl restart clamav-daemon.service || true
 
 # expose the daemon socket where lib/detect-socket looks (/tmp or /var/run)
 i=0

@@ -24,11 +24,12 @@ jobs:
       - run: npm run lint
 
   test:
+    needs: [get-lts]
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node-version: [22, 24]
+        node-version: ${{ fromJson(needs.get-lts.outputs.lts) }}
     runs-on: ${{ matrix.os }}
     name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
     steps:
@@ -40,19 +41,13 @@ jobs:
       - run: npm test
 
   macos:
-    needs: [get-lts]
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest]
-        node-version: ${{ fromJson(needs.get-lts.outputs.current) }}
-    runs-on: ${{ matrix.os }}
-    name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: macos-latest
+    name: Node LTS on macOS
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: lts/*
       - run: npm install
       - run: npm test
 
@@ -87,5 +82,5 @@ jobs:
       - name: install opendkim + opendmarc
         run: sh ./test/helpers/install-opendkim.sh
       - name: wait for scanners to listen
-        run: bash ./test/helpers/wait-for-scanners.sh
+        run: sh ./test/helpers/wait-for-scanners.sh
       - run: npm test
