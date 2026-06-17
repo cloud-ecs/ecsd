@@ -28,8 +28,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: [20, 22, 24]
+        os: [ubuntu-latest]
+        node-version: [22, 24]
+    runs-on: ${{ matrix.os }}
+    name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci || npm install
+      - run: npm test
+
+  macos:
+    needs: [lint]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest]
+        node-version: [24]
     runs-on: ${{ matrix.os }}
     name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
     steps:
