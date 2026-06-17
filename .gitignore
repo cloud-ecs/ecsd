@@ -6,3 +6,4 @@ spool
 ess.sublime-*
 html/vendor
 package-lock.json
+cloud-email-scanner.local.ini

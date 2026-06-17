@@ -9,6 +9,14 @@ sudo apt-get install -y clamav clamav-daemon
 sudo systemctl stop clamav-freshclam || true
 sudo freshclam
 
+# clamd's AppArmor profile denies reading files outside its allowlist (the CI
+# workspace included), so SCAN-by-path over the cli + unix socket fails with
+# "Permission denied". Unload the profile so clamd can read the test fixtures.
+if [ -e /etc/apparmor.d/usr.sbin.clamd ]; then
+    sudo apparmor_parser -R /etc/apparmor.d/usr.sbin.clamd 2>/dev/null || true
+    sudo ln -sf /etc/apparmor.d/usr.sbin.clamd /etc/apparmor.d/disable/
+fi
+
 # 24.04 socket-activates clamd and it ignores the TCPSocket directive in
 # clamd.conf in that mode. Add the TCP listener to the *socket* unit instead so
 # systemd hands clamd the extra fd. clamd is slow to load the full DB before it

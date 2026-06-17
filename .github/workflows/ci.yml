@@ -67,6 +67,8 @@ jobs:
     name: live scanners
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      ECSD_ENV: ci
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6

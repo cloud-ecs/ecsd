@@ -31,9 +31,15 @@
     "supertest": "^7.2.2"
   },
   "license": "BSD-2-Clause",
+  "prettier": {
+    "singleQuote": true,
+    "semi": false
+  },
   "scripts": {
-    "start": "node server.js",
     "lint": "eslint *.js lib routes test",
+    "prettier": "npx prettier . --check",
+    "prettier:fix": "npx prettier . --write --log-level=warn",
+    "start": "node server.js",
     "test": "node --test --test-force-exit",
     "test:coverage": "node --test --experimental-test-coverage --test-force-exit",
     "test:coverage:lcov": "mkdir -p coverage && node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test-force-exit"

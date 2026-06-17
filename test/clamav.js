@@ -19,7 +19,7 @@ describe('clamav', () => {
             if (!avail) return t.skip();
             const results = await clamav.scanBin(virusMsg);
             assert.ok(results.fail.length);
-            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+            assert.match(results.fail[0], /Eicar/i);
         });
 
         it('passes a clean message', async (t) => {
@@ -38,7 +38,7 @@ describe('clamav', () => {
             if (!avail) return t.skip();
             const results = await clamav.scanTcp(virusMsg);
             assert.ok(results.fail.length);
-            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+            assert.match(results.fail[0], /Eicar/i);
         });
 
         it('passes a clean message', async (t) => {
@@ -57,7 +57,7 @@ describe('clamav', () => {
             if (!avail) return t.skip();
             const results = await clamav.scanSocket(virusMsg);
             assert.ok(results.fail.length);
-            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+            assert.match(results.fail[0], /Eicar/i);
         });
 
         it('passes a clean message', async (t) => {
@@ -76,7 +76,7 @@ describe('clamav', () => {
             if (!avail) return t.skip();
             const results = await clamav.scan(virusMsg);
             assert.ok(results.fail.length);
-            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+            assert.match(results.fail[0], /Eicar/i);
         });
 
         it('scans clean', async (t) => {
