@@ -1,10 +1,16 @@
 #!/bin/sh
+set -eu
 
-wget -O- https://rspamd.com/apt-stable/gpg.key | sudo apt-key add -
-echo "deb [arch=amd64] http://rspamd.com/apt-stable/ $(lsb_release -c -s) main" | sudo tee /etc/apt/sources.list.d/rspamd.list
-echo "deb-src [arch=amd64] http://rspamd.com/apt-stable/ $(lsb_release -c -s) main" | sudo tee -a /etc/apt/sources.list.d/rspamd.list
+. /etc/os-release
+
+# the distro package lags badly; use the upstream stable repo
+sudo mkdir -p /etc/apt/keyrings
+sudo wget -qO /etc/apt/keyrings/rspamd.asc https://rspamd.com/apt-stable/gpg.key
+echo "deb [signed-by=/etc/apt/keyrings/rspamd.asc] http://rspamd.com/apt-stable/ ${VERSION_CODENAME} main" \
+    | sudo tee /etc/apt/sources.list.d/rspamd.list
 sudo apt-get update
-sudo apt-get --no-install-recommends install -y rspamd
+sudo apt-get install -y rspamd
 
-sudo service rspamd defaults
-sudo service rspamd start
+# the normal worker listens on 11333, the port the tests use
+sudo systemctl enable --now rspamd
+sudo systemctl restart rspamd

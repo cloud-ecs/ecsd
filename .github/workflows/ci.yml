@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-      - run: npm ci || npm install
+      - run: npm install
       - run: npm run lint
 
   test:
@@ -36,15 +36,16 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci || npm install
+      - run: npm install
       - run: npm test
 
   macos:
+    needs: [get-lts]
     strategy:
       fail-fast: false
       matrix:
         os: [macos-latest]
-        node-version: [24]
+        node-version: ${{ fromJson(needs.get-lts.outputs.current) }}
     runs-on: ${{ matrix.os }}
     name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
     steps:
@@ -52,5 +53,39 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci || npm install
+      - run: npm install
+      - run: npm test
+
+  get-lts:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get
+        uses: msimerson/node-lts-versions@v1
+    outputs:
+      active: ${{ steps.get.outputs.active }}
+      maintenance: ${{ steps.get.outputs.maintenance }}
+      lts: ${{ steps.get.outputs.lts }}
+      current: ${{ steps.get.outputs.current }}
+      min: ${{ steps.get.outputs.min }}
+
+  live:
+    name: live scanners
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - run: npm install
+      - name: install clamav
+        run: sh ./test/helpers/install-clamav.sh
+      - name: install spamassassin
+        run: sh ./test/helpers/install-spamassassin.sh
+      - name: install rspamd
+        run: sh ./test/helpers/install-rspamd.sh
+      - name: install opendkim + opendmarc
+        run: sh ./test/helpers/install-opendkim.sh
+      - name: wait for scanners to listen
+        run: bash ./test/helpers/wait-for-scanners.sh
       - run: npm test
