@@ -27,17 +27,14 @@
     "@eslint/js": "^10.0.1",
     "eslint": "^10.5.0",
     "globals": "^17.6.0",
-    "mocha": "^11.7.6",
     "supertest": "^7.2.2"
-  },
-  "overrides": {
-    "diff": "^9.0.0",
-    "serialize-javascript": "^7.0.5"
   },
   "license": "BSD-2-Clause",
   "scripts": {
     "start": "node server.js",
     "lint": "eslint *.js lib routes test",
-    "test": "npx mocha"
+    "test": "node --test --test-force-exit",
+    "test:coverage": "node --test --experimental-test-coverage --test-force-exit",
+    "test:coverage:lcov": "mkdir -p coverage && node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test-force-exit"
   }
 }

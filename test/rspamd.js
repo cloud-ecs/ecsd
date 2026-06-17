@@ -2,134 +2,89 @@
 
 process.env.NODE_ENV = 'test';
 
-const assert = require('assert');
+const assert = require('node:assert/strict');
+const os     = require('node:os');
+const { describe, it, before } = require('node:test');
 
 const rspamd = require('../lib/rspamd').createScanner();
-const isTravis = /worker/.test(require('os').hostname());
+const isTravis = /worker/.test(os.hostname());
 if (process.env.NODE_ENV !== 'cov' && isTravis) return;
 
-describe('rspamd', function() {
+const probe = (fn) => new Promise((resolve) => fn((err, res) => resolve(err ? false : res)));
+const call  = (fn) => new Promise((resolve, reject) => fn((err, res) => (err ? reject(err) : resolve(res))));
 
-    describe('rspamc cli', function () {
+describe('rspamd', () => {
 
-        before(function (done) {
-            rspamd.binFound((err, bin) => {
-                if (err) console.error(err.message)
-                if (!bin) this.skip()
-                done(err)
-            })
-        })
+    describe('rspamc cli', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => rspamd.binFound(cb)); });
 
-        it('finds gtube spam message', function (done) {
-            rspamd.scanBin(rspamd.failFile, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.fail.length, 1)
-                done()
-            })
-        })
+        it('finds gtube spam message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scanBin(rspamd.failFile, cb));
+            assert.equal(results.fail.length, 1);
+        });
 
-        it('passes a clean message', function (done) {
-            rspamd.scanBin(rspamd.passFile, (err, results) => {
-                assert.ifError(err)
-                // console.log(results);
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
+        it('passes a clean message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scanBin(rspamd.passFile, cb));
+            assert.equal(results.pass.length, 1);
+        });
+    });
 
-    describe('TCP', function () {
+    describe('TCP', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => rspamd.tcpListening(cb)); });
 
-        before(function (done) {
-            rspamd.tcpListening((err, listening) => {
-                if (err) console.error(err.message)
-                if (!listening) this.skip()
-                done()
-            })
-        })
+        it('pings', async (t) => {
+            if (!avail) return t.skip();
+            assert.ok(await call((cb) => rspamd.tcpAvailable(cb)));
+        });
 
-        it('pings', function (done) {
-            rspamd.tcpAvailable((err, avail) => {
-                assert.ifError(err)
-                assert.ok(avail)
-                done()
-            })
-        })
+        it('detects a spam message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scanTcp(rspamd.failFile, cb));
+            assert.equal(results.fail.length, 1);
+        });
 
-        it('detects a spam message', function (done) {
-            rspamd.scanTcp(rspamd.failFile, (err, results) => {
-                assert.ifError(err)
-                // console.log(results);
-                assert.equal(results.fail.length, 1)
-                done()
-            })
-        })
+        it('passes a clean message', { timeout: 7000 }, async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scanTcp(rspamd.passFile, cb));
+            assert.equal(results.pass.length, 1);
+        });
+    });
 
-        this.timeout(7000);
-        it('passes a clean message', function (done) {
-            rspamd.scanTcp(rspamd.passFile, (err, results) => {
-                // console.log(result);
-                assert.ifError(err)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
+    describe('unix socket', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => rspamd.socketFound(cb)); });
 
-    describe('unix socket', function () {
+        it('detects spam message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scanSocket(rspamd.failFile, cb));
+            assert.equal(results.fail.length, 1);
+        });
 
-        before(function (done) {
-            rspamd.socketFound((err, listening) => {
-                if (err) console.error(err.message)
-                if (!listening) this.skip()
-                done()
-            })
-        })
+        it('passes a clean message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scanSocket(rspamd.passFile, cb));
+            assert.equal(results.pass.length, 1);
+        });
+    });
 
-        it('detects spam message', function (done) {
-            rspamd.scanSocket(rspamd.failFile, (err, results) => {
-                assert.ifError(err)
-                // console.log(result);
-                assert.equal(results.fail.length, 1)
-                done()
-            })
-        })
+    describe.skip('scan dispatch', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => rspamd.isAvailable(cb)); });
 
-        it('passes a clean message', function (done) {
-            rspamd.scanSocket(rspamd.passFile, (err, results) => {
-                // console.log(result);
-                assert.ifError(err)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
+        it('scans spam', { timeout: 4000 }, async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scan(rspamd.failFile, cb));
+            assert.equal(results.fail.length, 1);
+        });
 
-    describe.skip('scan dispatch', function () {
-        this.timeout(4000)
-
-        before(function (done) {
-            rspamd.isAvailable((err, available) => {
-                if (err) console.error(err.message)
-                if (!available) this.skip()
-                done()
-            })
-        })
-
-        it('scans spam', function (done) {
-            rspamd.scan(rspamd.failFile, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.fail.length, 1)
-                done()
-            })
-        })
-
-        it('scans clean', function (done) {
-            rspamd.scan(rspamd.passFile, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
-})
+        it('scans clean', { timeout: 4000 }, async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => rspamd.scan(rspamd.passFile, cb));
+            assert.equal(results.pass.length, 1);
+        });
+    });
+});

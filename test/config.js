@@ -1,29 +1,26 @@
 'use strict';
 
-const assert  = require('assert');
+const assert = require('node:assert/strict');
+const { describe, it } = require('node:test');
 
-const config  = require('../lib/config');
+const config = require('../lib/config');
 
-describe('cloud-email-scanner', function () {
+describe('cloud-email-scanner', () => {
 
-    describe('loadConfig', function () {
-        it('has loadConfig function', function (done) {
+    describe('loadConfig', () => {
+        it('has loadConfig function', () => {
             assert.equal(typeof config.loadConfig, 'function');
-            done();
-        })
+        });
 
-        it('finds cloud-email-scanner.ini', function (done) {
-            const cfg = config.loadConfig();
-            assert.ok(cfg);
-            done();
-        })
+        it('finds cloud-email-scanner.ini', () => {
+            assert.ok(config.loadConfig());
+        });
 
-        it('config has expected sections', function (done) {
+        it('config has expected sections', () => {
             config.loadConfig();
-            ['clamav', 'spamassassin', 'esets'].forEach(function (s) {
+            for (const s of ['clamav', 'spamassassin', 'esets']) {
                 assert.ok(config.cfg[s]);
-            });
-            done();
-        })
-    })
-})
+            }
+        });
+    });
+});

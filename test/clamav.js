@@ -1,132 +1,95 @@
 'use strict';
 
-const assert = require('assert');
-const path   = require('path');
+const assert = require('node:assert/strict');
+const os     = require('node:os');
+const path   = require('node:path');
+const { describe, it, before } = require('node:test');
 
 const clamav = require('../lib/clamav').createScanner();
 
 const virusMsg = path.resolve('test/files/eicar.eml');
 const cleanMsg = path.resolve('test/files/clean.eml');
 
-if (/worker/.test(require('os').hostname())) return;
-console.log(require('os').hostname());
+if (/worker/.test(os.hostname())) return;
 
-describe('clamav', function () {
+const probe = (fn) => new Promise((resolve) => fn((err, res) => resolve(err ? false : res)));
+const call  = (fn) => new Promise((resolve, reject) => fn((err, res) => (err ? reject(err) : resolve(res))));
 
-    describe('clamdscan', function () {
+describe('clamav', () => {
 
-        before(function (done) {
-            clamav.binAvailable((err, bin) => {
-                if (err) console.error(err.message)
-                if (!bin) this.skip()
-                done()
-            })
-        })
+    describe('clamdscan', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => clamav.binAvailable(cb)); });
 
-        it('detects eicar virus', function (done) {
-            clamav.scanBin(virusMsg, (err, results) => {
-                assert.ifError(err)
-                // console.log(results)
-                assert.ok(results.fail.length)
-                assert.equal(results.fail[0], 'Eicar-Test-Signature')
-                done()
-            })
-        })
+        it('detects eicar virus', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scanBin(virusMsg, cb));
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+        });
 
-        it('passes a clean message', function (done) {
-            clamav.scanBin(cleanMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.fail.length, 0)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
+        it('passes a clean message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scanBin(cleanMsg, cb));
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
+        });
+    });
 
-    describe('TCP', function () {
+    describe('TCP', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => clamav.tcpListening(cb)); });
 
-        before(function (done) {
-            clamav.tcpListening((err, listening) => {
-                if (err) console.error(err.message)
-                if (!listening) this.skip()
-                done()
-            })
-        })
+        it('detects a virus laden message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scanTcp(virusMsg, cb));
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+        });
 
-        it('detects a virus laden message', function (done) {
-            clamav.scanTcp(virusMsg, (err, results) => {
-                assert.ifError(err)
-                assert.ok(results.fail.length)
-                assert.equal(results.fail[0], 'Eicar-Test-Signature')
-                done()
-            })
-        })
+        it('passes a clean message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scanTcp(cleanMsg, cb));
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
+        });
+    });
 
-        it('passes a clean message', function (done) {
-            clamav.scanTcp(cleanMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.fail.length, 0)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
+    describe('unix socket', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => clamav.socketFound(cb)); });
 
-    describe('unix socket', function () {
+        it('detects virus in message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scanSocket(virusMsg, cb));
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+        });
 
-        before(function (done) {
-            clamav.socketFound((err, listening) => {
-                if (err) console.error(err.message)
-                if (!listening) this.skip()
-                done()
-            })
-        })
+        it('passes a clean message', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scanSocket(cleanMsg, cb));
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
+        });
+    });
 
-        it('detects virus in message', function (done) {
-            clamav.scanSocket(virusMsg, (err, results) => {
-                assert.ifError(err)
-                assert.ok(results.fail.length)
-                assert.equal(results.fail[0], 'Eicar-Test-Signature')
-                done()
-            })
-        })
+    describe('scan dispatch', () => {
+        let avail;
+        before(async () => { avail = await probe((cb) => clamav.isAvailable(cb)); });
 
-        it('passes a clean message', function (done) {
-            clamav.scanSocket(cleanMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.fail.length, 0)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
+        it('scans viruses', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scan(virusMsg, cb));
+            assert.ok(results.fail.length);
+            assert.equal(results.fail[0], 'Eicar-Test-Signature');
+        });
 
-    describe('scan dispatch', function () {
-
-        before(function (done) {
-            clamav.isAvailable((err, available) => {
-                if (err) console.error(err.message)
-                if (!available) this.skip()
-                done()
-            })
-        })
-
-        it('scans viruses', function (done) {
-            clamav.scan(virusMsg, (err, results) => {
-                assert.ifError(err)
-                assert.ok(results.fail.length)
-                assert.equal(results.fail[0], 'Eicar-Test-Signature')
-                done()
-            })
-        })
-
-        it('scans clean', function (done) {
-            clamav.scan(cleanMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.fail.length, 0)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-    })
-})
+        it('scans clean', async (t) => {
+            if (!avail) return t.skip();
+            const results = await call((cb) => clamav.scan(cleanMsg, cb));
+            assert.equal(results.fail.length, 0);
+            assert.equal(results.pass.length, 1);
+        });
+    });
+});
