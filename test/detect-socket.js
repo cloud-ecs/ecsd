@@ -5,18 +5,11 @@ const findSocket = require('../lib/detect-socket').findSocket;
 
 describe('detect-socket', function () {
 
-    it.skip('finds clamd.socket', function (done) {
-        findSocket('clamd.socket', ['/tmp'], (socketFile) => {
-            // console.log(socketFile);
-            assert.ok(socketFile);
-            done()
-        })
+    it.skip('finds clamd.socket', async function () {
+        assert.ok(await findSocket('clamd.socket', ['/tmp']));
     })
 
-    it('does not file files that are not sockets', function (done) {
-        findSocket('resolv.conf', ['/etc'], (socketFile) => {
-            assert.equal(socketFile, undefined);
-            done()
-        })
+    it('does not file files that are not sockets', async function () {
+        assert.equal(await findSocket('resolv.conf', ['/etc']), undefined);
     })
 })

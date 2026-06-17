@@ -1,8 +1,6 @@
-[![Build Status][ci-img]][ci-url]
-[![Code Coverage][cov-img]][cov-url]
-[![Code Climate][clim-img]][clim-url]
-
 # Cloud Email Scanner Server
+
+[![Build][ci-img]][ci-url] [![Cover][cov-img]][cov-url] [![Qlty][qlty-img]][qlty-url]
 
 A web service that receives emails via HTTP and scans them with one or many filtering engines (antivirus, antispam, policy engines, etc.)
 
@@ -10,20 +8,23 @@ A web service that receives emails via HTTP and scans them with one or many filt
 
 - [x] spamassassin
 - [x] rspamd
-- [x] dspam
-- [ ] messagesniffer
 - [ ] dcc
 - [ ] virustotal
 - [ ] fprot
 - [ ] f-secure
 - [x] clamav
-- [ ] avg
 - [ ] eset
 - [ ] kaspersky
 - [ ] comodo
 - [x] bitdefender
 - [x] opendkim
 - [ ] opendmarc
+
+### Legacy / Deprecated Scanners
+
+- [x] dspam
+- [ ] messagesniffer
+- [ ] avg
 
 # API
 
@@ -80,5 +81,5 @@ matt; result=\"Innocent\"; class=\"Whitelisted\"; probability=0.0000; confidence
 [ci-url]: https://travis-ci.org/cloud-ecs/ecsd
 [cov-img]: https://codecov.io/github/cloud-ecs/ecsd/coverage.svg
 [cov-url]: https://codecov.io/github/cloud-ecs/ecsd
-[clim-img]: https://codeclimate.com/github/cloud-ecs/ecsd/badges/gpa.svg
-[clim-url]: https://codeclimate.com/github/cloud-ecs/ecsd
+[qlty-img]: https://codeclimate.com/github/cloud-ecs/ecsd/badges/gpa.svg
+[qlty-url]: https://codeclimate.com/github/cloud-ecs/ecsd

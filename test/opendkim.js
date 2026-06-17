@@ -13,9 +13,9 @@ describe('opendkim', function () {
     this.timeout(3000);
 
     before(function (done) {
-        opendkim.binFound(function (err, found) {
-            if (err) return done(err);
-            if (!found) return done(new Error('not installed?'));
+        opendkim.binFound((err, found) => {
+            if (err) console.error(err.message);
+            if (!found) this.skip();
             done();
         });
     });
