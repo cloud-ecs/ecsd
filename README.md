@@ -76,7 +76,6 @@ matt; result=\"Innocent\"; class=\"Whitelisted\"; probability=0.0000; confidence
 
 ![status page image](https://cloud.githubusercontent.com/assets/261635/11162087/56acf54a-8a46-11e5-882c-5d8b5a704d71.png)
 
-
 [ci-img]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml
 [cov-img]: https://codecov.io/github/cloud-ecs/ecsd/coverage.svg
