@@ -1,85 +1,46 @@
-'use strict';
+'use strict'
 
-const assert = require('assert');
-const path   = require('path');
+const assert = require('node:assert/strict')
+const path = require('node:path')
+const { describe, it, before } = require('node:test')
 
-const opendkim = require('../lib/opendkim').createScanner();
+const opendkim = require('../lib/opendkim').createScanner()
 
-const signedValidMsg = path.resolve('test/files/dkim-valid.eml');
-const signedInvalidMsg = path.resolve('test/files/dkim-invalid.eml');
-const unsignedMsg = path.resolve('test/files/clean.eml');
+const signedValidMsg = path.resolve('test/files/dkim-valid.eml')
+const signedInvalidMsg = path.resolve('test/files/dkim-invalid.eml')
+const unsignedMsg = path.resolve('test/files/clean.eml')
 
-describe('opendkim', function () {
-    this.timeout(3000);
+describe('opendkim', () => {
+  let found
+  before(async () => {
+    found = await opendkim.binFound().catch(() => false)
+  })
 
-    before(function (done) {
-        opendkim.binFound((err, found) => {
-            if (err) console.error(err.message);
-            if (!found) this.skip();
-            done();
-        });
-    });
+  it('is found', (t) => {
+    if (!found) return t.skip()
+    assert.ok(found)
+  })
 
-    it('is found', function (done) {
-        opendkim.binFound(function (err, binFound) {
-            // console.log(arguments);
-            assert.ifError(err);
-            assert.ok(binFound);
-            done();
-        });
-    });
+  it('is available', async (t) => {
+    if (!found) return t.skip()
+    assert.ok(await opendkim.isAvailable())
+  })
 
-    it('is available', function (done) {
-        this.timeout(4000);
-        opendkim.isAvailable(function (err, binFound) {
-            // console.log(arguments);
-            assert.ifError(err);
-            assert.ok(binFound);
-            done();
-        });
-    });
+  it('valid signed message yields pass', async (t) => {
+    if (!found) return t.skip()
+    const results = await opendkim.scanBin(signedValidMsg)
+    assert.ok(results.pass.length > 0)
+  })
 
-    it('valid signed message yields pass', function (done) {
-        opendkim.binFound(function (err, bin) {
-            if (err) return done(err);
-            opendkim.available.bin = bin;
+  it('invalid signed message yields fail', async (t) => {
+    if (!found) return t.skip()
+    const results = await opendkim.scanBin(signedInvalidMsg)
+    assert.ok(results.fail.length > 0)
+  })
 
-            opendkim.scanBin(signedValidMsg, function (err, results) {
-                assert.ifError(err);
-                // console.log(results);
-                assert.ok(results.pass.length > 0);
-                done();
-            });
-        });
-    });
-
-    this.timeout(4000);
-    it('invalid signed message yields fail', function (done) {
-        opendkim.binFound(function (err, bin) {
-            if (err) return done(err);
-            opendkim.available.bin = bin;
-
-            opendkim.scanBin(signedInvalidMsg, function (err, results) {
-                assert.ifError(err);
-                // console.log(results);
-                assert.ok(results.fail.length > 0);
-                done();
-            });
-        });
-    });
-
-    it('unsigned message yields failure', function (done) {
-        opendkim.binFound(function (err, bin) {
-            if (err) return done(err);
-            opendkim.available.bin = bin;
-
-            opendkim.scanBin(unsignedMsg, function (err, results) {
-                assert.ifError(err);
-                // console.log(results);
-                assert.ok(results.fail.length > 0);
-                done();
-            });
-        });
-    });
-});
-
+  it('unsigned message yields failure', async (t) => {
+    if (!found) return t.skip()
+    const results = await opendkim.scanBin(unsignedMsg)
+    assert.ok(results.fail.length > 0)
+  })
+})

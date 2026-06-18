@@ -20,15 +20,16 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-      - run: npm ci || npm install
+      - run: npm install
       - run: npm run lint
 
   test:
+    needs: [get-lts]
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node-version: [22, 24]
+        node-version: ${{ fromJson(needs.get-lts.outputs.lts) }}
     runs-on: ${{ matrix.os }}
     name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
     steps:
@@ -36,21 +37,68 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci || npm install
+      - run: npm install
       - run: npm test
 
   macos:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest]
-        node-version: [24]
-    runs-on: ${{ matrix.os }}
-    name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
+    runs-on: macos-latest
+    name: Node LTS on macOS
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci || npm install
+          node-version: lts/*
+      - run: npm install
       - run: npm test
+
+  get-lts:
+    runs-on: ubuntu-latest
+    steps:
+      - id: get
+        uses: msimerson/node-lts-versions@v1
+    outputs:
+      active: ${{ steps.get.outputs.active }}
+      maintenance: ${{ steps.get.outputs.maintenance }}
+      lts: ${{ steps.get.outputs.lts }}
+      current: ${{ steps.get.outputs.current }}
+      min: ${{ steps.get.outputs.min }}
+
+  live:
+    name: live scanners
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ECSD_ENV: ci
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - run: npm install
+      - name: install spamassassin
+        run: sh ./test/helpers/install-spamassassin.sh
+      - name: install rspamd
+        run: sh ./test/helpers/install-rspamd.sh
+      - name: install opendkim
+        run: sh ./test/helpers/install-opendkim.sh
+      - name: wait for scanners to listen
+        run: sh ./test/helpers/wait-for-scanners.sh spamd rspamd
+      - run: npm test
+
+  clamav:
+    name: clamav
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ECSD_ENV: ci
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - run: npm install
+      - name: install clamav
+        run: sh ./test/helpers/install-clamav.sh
+      - name: wait for clamd to listen
+        run: sh ./test/helpers/wait-for-scanners.sh clamd
+      - run: node --test --test-force-exit test/clamav.js

@@ -1,140 +1,90 @@
-'use strict';
+'use strict'
 
-const assert = require('assert');
-const path   = require('path');
+const assert = require('node:assert/strict')
+const path = require('node:path')
+const { describe, it, before } = require('node:test')
 
-const dspam  = require('../lib/dspam').createScanner();
+const dspam = require('../lib/dspam').createScanner()
 
-const spamMsg  = path.resolve('test/files/gtube.eml');
-const cleanMsg = path.resolve('test/files/clean.eml');
-
-if (/worker/.test(require('os').hostname())) return;
-console.log(require('os').hostname());
+const spamMsg = path.resolve('test/files/gtube.eml')
+const cleanMsg = path.resolve('test/files/clean.eml')
 
 // dspam LMTP delivery needs smtp-connection, which is no longer a dependency
-describe.skip('dspam', function () {
-
-    describe('dspam cli', function () {
-
-        before(function (done) {
-            dspam.binFound((err, bin) => {
-                if (err) console.error(err.message)
-                if (!bin) this.skip()
-                done()
-            })
-        })
-
-        it('detects spam message', function (done) {
-            dspam.scanBin(spamMsg, (err, results) => {
-                assert.ifError(err)
-                // console.log(results);
-                // naive bayes...
-                // assert.equal(results.fail.length, 1);
-                done()
-            })
-        })
-
-        it('passes a clean message', function (done) {
-            dspam.scanBin(cleanMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
+describe.skip('dspam', () => {
+  describe('dspam cli', () => {
+    let avail
+    before(async () => {
+      avail = await dspam.binFound().catch(() => false)
     })
 
-    describe('TCP', function () {
-
-        before(function (done) {
-            dspam.tcpListening((err, listening) => {
-                if (err) console.error(err.message)
-                if (!listening) this.skip()
-                done()
-            })
-        })
-
-        it('pings', function (done) {
-            dspam.ping(null, dspam.cfg.net, (err, result) => {
-                assert.ifError(err)
-                assert.ok(result)
-                done()
-            })
-        })
-
-        it.skip('detects a spam message', function (done) {
-            dspam.scanTcp(spamMsg, (err, results) => {
-                assert.ifError(err)
-                // console.log(result);
-                // silly naive bayes..., doesn't know any better...yet
-                // assert.equal(results.fail.length, 1);
-                assert.ok(results.raw)
-                done()
-            })
-        })
-
-        it('passes a clean message', function (done) {
-            dspam.scanTcp(cleanMsg, (err, results) => {
-                // console.log(results)
-                assert.ifError(err)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
+    it('detects spam message', async (t) => {
+      if (!avail) return t.skip()
+      await dspam.scanBin(spamMsg)
     })
 
-    describe('unix socket', function () {
+    it('passes a clean message', async (t) => {
+      if (!avail) return t.skip()
+      const results = await dspam.scanBin(cleanMsg)
+      assert.equal(results.pass.length, 1)
+    })
+  })
 
-        before(function (done) {
-            dspam.socketFound((err, listening) => {
-                if (err) console.error(err.message)
-                if (!listening) this.skip()
-                done()
-            })
-        })
-
-        it.skip('detects spam message', function (done) {
-            dspam.scanSocket(spamMsg, (err, results) => {
-                assert.ifError(err)
-                // console.log(result)
-                // dspam is naive when untrained, so it won't catch this
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
-
-        it('passes a clean message', function (done) {
-            dspam.scanSocket(cleanMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
+  describe('TCP', () => {
+    let avail
+    before(async () => {
+      avail = await dspam.tcpListening().catch(() => false)
     })
 
-    describe('scan dispatch', function () {
-
-        before(function (done) {
-            dspam.isAvailable((err, available) => {
-                if (err) console.error(err.message)
-                if (!available) this.skip()
-                done()
-            })
-        })
-
-        it.skip('scans spam', function (done) {
-            dspam.scan(spamMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.fail.length, 1)
-                done()
-            })
-        })
-
-        it('scans clean', function (done) {
-            dspam.scan(cleanMsg, (err, results) => {
-                assert.ifError(err)
-                assert.equal(results.pass.length, 1)
-                done()
-            })
-        })
+    it('pings', async (t) => {
+      if (!avail) return t.skip()
+      assert.ok(await dspam.ping(null, dspam.cfg.net))
     })
+
+    it.skip('detects a spam message', async () => {
+      const results = await dspam.scanTcp(spamMsg)
+      assert.ok(results.raw)
+    })
+
+    it('passes a clean message', async (t) => {
+      if (!avail) return t.skip()
+      const results = await dspam.scanTcp(cleanMsg)
+      assert.equal(results.pass.length, 1)
+    })
+  })
+
+  describe('unix socket', () => {
+    let avail
+    before(async () => {
+      avail = await dspam.socketFound().catch(() => false)
+    })
+
+    it.skip('detects spam message', async () => {
+      const results = await dspam.scanSocket(spamMsg)
+      assert.equal(results.pass.length, 1)
+    })
+
+    it('passes a clean message', async (t) => {
+      if (!avail) return t.skip()
+      const results = await dspam.scanSocket(cleanMsg)
+      assert.equal(results.pass.length, 1)
+    })
+  })
+
+  describe('scan dispatch', () => {
+    let avail
+    before(async () => {
+      avail = await dspam.isAvailable().catch(() => false)
+    })
+
+    it.skip('scans spam', async () => {
+      const results = await dspam.scan(spamMsg)
+      assert.equal(results.fail.length, 1)
+    })
+
+    it('scans clean', async (t) => {
+      if (!avail) return t.skip()
+      const results = await dspam.scan(cleanMsg)
+      assert.equal(results.pass.length, 1)
+    })
+  })
 })

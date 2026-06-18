@@ -1,14 +1,16 @@
-'use strict';
+'use strict'
 
-const assert  = require('assert');
-const findBin = require('../lib/detect-cli').findBin;
+const assert = require('node:assert/strict')
+const { describe, it } = require('node:test')
 
-describe('detect-cli', function () {
-    it('finds the bin "which"', async function () {
-        assert.ok(await findBin('which', []));
-    })
+const findBin = require('../lib/detect-cli').findBin
 
-    it('does not find the bin "does-not-ever-exist"', async function () {
-        assert.equal(await findBin('does-not-ever-exist', []), undefined);
-    })
+describe('detect-cli', () => {
+  it('finds the bin "which"', async () => {
+    assert.ok(await findBin('which', []))
+  })
+
+  it('does not find the bin "does-not-ever-exist"', async () => {
+    assert.equal(await findBin('does-not-ever-exist', []), undefined)
+  })
 })

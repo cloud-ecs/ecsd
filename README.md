@@ -10,15 +10,18 @@ A web service that receives emails via HTTP and scans them with one or many filt
 - [x] rspamd
 - [ ] dcc
 - [ ] virustotal
-- [ ] fprot
-- [ ] f-secure
 - [x] clamav
-- [ ] eset
-- [ ] kaspersky
-- [ ] comodo
 - [x] bitdefender
 - [x] opendkim
 - [ ] opendmarc
+
+### Still viable?
+
+- [ ] fprot
+- [ ] f-secure
+- [ ] eset
+- [ ] kaspersky
+- [ ] comodo
 
 ### Legacy / Deprecated Scanners
 
@@ -76,10 +79,9 @@ matt; result=\"Innocent\"; class=\"Whitelisted\"; probability=0.0000; confidence
 
 ![status page image](https://cloud.githubusercontent.com/assets/261635/11162087/56acf54a-8a46-11e5-882c-5d8b5a704d71.png)
 
-
-[ci-img]: https://travis-ci.org/cloud-ecs/ecsd.svg
-[ci-url]: https://travis-ci.org/cloud-ecs/ecsd
+[ci-img]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml
 [cov-img]: https://codecov.io/github/cloud-ecs/ecsd/coverage.svg
 [cov-url]: https://codecov.io/github/cloud-ecs/ecsd
-[qlty-img]: https://codeclimate.com/github/cloud-ecs/ecsd/badges/gpa.svg
-[qlty-url]: https://codeclimate.com/github/cloud-ecs/ecsd
+[qlty-img]: https://qlty.sh/gh/cloud-ecs/projects/ecsd/maintainability.svg
+[qlty-url]: https://qlty.sh/gh/cloud-ecs/projects/ecsd

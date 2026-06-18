@@ -1,24 +1,16 @@
-'use strict';
+'use strict'
 
-const assert  = require('assert');
-const findTcp = require('../lib/detect-tcp').findTcp;
+const assert = require('node:assert/strict')
+const { describe, it } = require('node:test')
 
-describe('detect-tcp', function () {
+const findTcp = require('../lib/detect-tcp').findTcp
 
-    it.skip('detects a listening port', function (done) {
-        findTcp({ port: 3310 }, (err, listening) => {
-            assert.ifError(err)
-            // console.log(listening);
-            assert.ok(listening)
-            done()
-        })
-    })
+describe('detect-tcp', () => {
+  it.skip('detects a listening port', async () => {
+    assert.ok(await findTcp({ port: 3310 }))
+  })
 
-    it('detects a non-listening port', function (done) {
-        findTcp({ port: 3311 }, (err, listening) => {
-            assert.ok(err);
-            assert.equal(listening, undefined);
-            done()
-        })
-    })
+  it('detects a non-listening port', async () => {
+    await assert.rejects(() => findTcp({ port: 3311 }))
+  })
 })
