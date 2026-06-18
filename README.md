@@ -1,4 +1,4 @@
-# Cloud Email Scanner Server
+# Email Content Scanning Daemon
 
 [![Build][ci-img]][ci-url] [![Cover][cov-img]][cov-url] [![Qlty][qlty-img]][qlty-url]
 
@@ -15,7 +15,7 @@ A web service that receives emails via HTTP and scans them with one or many filt
 - [x] [opendkim](http://www.opendkim.org)
 - [ ] [opendmarc](http://www.opendmarc.org)
 
-### Still viable?
+### Viable?
 
 - [ ] fprot
 - [ ] f-secure

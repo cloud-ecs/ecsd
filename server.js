@@ -1,19 +1,16 @@
 'use strict'
 
 // node.js built-ins
-var http = require('http')
-// var https      = require('https');
+const http = require('node:http')
+// const https = require('node:https');
 
-// npm deps
-var express = require('express')
+const express = require('express')
+const logger = require('morgan')
 
-// local deps
-var logger = require('morgan')
+// const logger = require('./lib/logger');
+const config = require('./lib/config').loadConfig()
 
-// var logger      = require('./lib/logger');
-var config = require('./lib/config').loadConfig()
-
-var app = express()
+const app = express()
 app.use(logger('dev'))
 
 require('./routes/static').public(app)
