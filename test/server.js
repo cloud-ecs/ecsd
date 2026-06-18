@@ -1,42 +1,43 @@
 'use strict'
 
-const { describe, it } = require('node:test')
-const supertest = require('supertest')
+const assert = require('node:assert/strict')
+const fs = require('node:fs/promises')
+const { describe, it, before, after } = require('node:test')
 const express = require('express')
 
-const logger = require('../lib/logger')
 const app = express()
-app.enable('trust proxy')
-
 require('../routes/scan').public(app)
 
 describe('routes, scan', () => {
-  const agent = supertest.agent(app)
+  let server
+  let base
+
+  before(async () => {
+    await new Promise((resolve) => {
+      server = app.listen(0, resolve)
+    })
+    base = `http://127.0.0.1:${server.address().port}`
+  })
+
+  after(() => server.close())
 
   describe('GET /scan', () => {
-    it('responds with scan form', () => {
-      return agent
-        .get('/scan')
-        .set('Accept', 'text/html')
-        .expect('Content-Type', /html/)
-        .expect(/file/)
-        .expect(200)
+    it('responds with an upload form', async () => {
+      const res = await fetch(`${base}/scan`, {
+        headers: { Accept: 'text/html' },
+      })
+      assert.equal(res.status, 200)
+      assert.match(res.headers.get('content-type'), /html/)
+      assert.match(await res.text(), /file/)
     })
   })
 
   describe('POST /scan', () => {
-    it('responds with JSON scan results', { timeout: 3000 }, () => {
-      return agent
-        .post('/scan')
-        .attach('virus', 'test/files/eicar.eml')
-        .set('Accept', 'json')
-        .expect((res) => {
-          logger.debug(res.body)
-          if (res.body.success && res.body.extra.exists) {
-            return 'should not return success'
-          }
-        })
-        .expect(200)
+    it('responds with a JSON array of scan results', async () => {
+      const body = await fs.readFile('test/files/eicar.eml')
+      const res = await fetch(`${base}/scan`, { method: 'POST', body })
+      assert.equal(res.status, 200)
+      assert.ok(Array.isArray(await res.json()))
     })
   })
 })

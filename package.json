@@ -1,8 +1,7 @@
 {
   "name": "ecsd",
   "description": "Email Content Scanning Daemon",
-  "version": "0.8.0",
-  "private": false,
+  "version": "0.9.0",
   "keywords": [
     "email",
     "antivirus",
@@ -13,22 +12,25 @@
   "bugs": {
     "url": "https://github.com/cloud-ecs/ecsd/issues"
   },
+  "files": [
+    "html",
+    "lib",
+    "routes",
+    "server.js",
+    "cloud-email-scanner.ini"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/cloud-ecs/ecsd.git"
   },
   "dependencies": {
     "express": "^5.2.1",
-    "formidable": "^3.5.4",
-    "ini": "^7.0.0",
-    "morgan": "^1.11.0",
-    "serve-favicon": "^2.5.1"
+    "ini": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "eslint": "^10.5.0",
-    "globals": "^17.6.0",
-    "supertest": "^7.2.2"
+    "globals": "^17.6.0"
   },
   "license": "BSD-2-Clause",
   "prettier": {
