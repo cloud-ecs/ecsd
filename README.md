@@ -33,51 +33,73 @@ A web service that receives emails via HTTP and scans them with one or many filt
 
 ## Request
 
-Send emails to be scanned as standard HTTP file upload.
+Send a message to be scanned as a standard HTTP file upload. The form field
+name is ignored — the first uploaded file is scanned.
 
-`curl -X POST -F eicar=@eicar.eml localhost:8000/scan`
-
-Sent metadata about the connection / message as HTTP headers.
-
-`curl -X POST -F eicar=@eicar.eml -H 'X-GeoIP: AS, CN, Fuzhou' -H 'X-Remote-IP: 27.150.160.26' localhost:8000/scan`
+```sh
+curl -X POST -F upload=@test/files/eicar.eml localhost:8000/scan
+```
 
 ## Response
 
-The response is a JSON encoded array, with the request and response for
-each available scanner.
+The response is a JSON array with one entry per available scanner. Each entry
+reports `pass`, `fail`, and `error` lists alongside the engine's `raw` output;
+a non-empty `fail` means that engine flagged the message.
+
+The example below is a real scan of the bundled EICAR test message, with `raw`
+trimmed for brevity.
 
 ```json
 [
-    {
-        "name":"clamav",
-        "pass":[],
-        "fail":["Eicar-Test-Signature"],
-        "error":[],
-        "raw":"/Users/matt/Documents/git/ess/spool/upload_9f8c482aaaa10fcf501bf5259c00746c.eml: Eicar-Test-Signature FOUND\n"
-    },
-    {
-        "name":"spamassassin",
-        "pass":["ham"],
-        "fail":[],
-        "raw":"SPAMD/1.1 0
-EX_OK\r\nContent-length: 62\r\nSpam: False ; 2.3 /
-5.0\r\n\r\nAPOSTROPHE_FROM,MISSING_DATE,MISSING_MID,NO_RECEIVED,NO_RELAYS","error":[]},{"pass":["5646b98f634915112796250"],"fail":[],"name":"dspam","raw":"X-DSPAM-Result:
-matt; result=\"Innocent\"; class=\"Whitelisted\"; probability=0.0000; confidence=0.99; signature=5646b98f634915112796250\n",
-        "error":[]
-    },
-    {
-        "name":"opendkim",
-        "pass":[],
-        "fail":["message not signed"],
-        "raw":"opendkim: /Users/matt/Documents/git/ess/spool/upload_9f8c482aaaa10fcf501bf5259c00746c.eml: message not signed\n",
-        "error":[]
-    }
+  {
+    "name": "clamav",
+    "pass": [],
+    "fail": ["Eicar-Signature"],
+    "error": [],
+    "raw": "stream: Eicar-Signature FOUND"
+  },
+  {
+    "name": "virustotal",
+    "pass": [],
+    "fail": [41],
+    "error": []
+  },
+  {
+    "name": "spamassassin",
+    "pass": ["ham"],
+    "fail": [],
+    "error": []
+  },
+  {
+    "name": "rspamd",
+    "pass": [],
+    "fail": [8.5],
+    "error": []
+  },
+  {
+    "name": "dcc",
+    "pass": ["A"],
+    "fail": [],
+    "error": [],
+    "raw": "A\nA\nX-DCC-...; bulk rep Body=3 Fuz1=3 Fuz2=3 rep=23%\n\n"
+  },
+  {
+    "name": "opendkim",
+    "pass": [],
+    "fail": ["message not signed"],
+    "error": []
+  }
 ]
 ```
 
-### Status Page
+## Status
 
-![status page image](https://cloud.githubusercontent.com/assets/261635/11162087/56acf54a-8a46-11e5-882c-5d8b5a704d71.png)
+The daemon serves a small web UI (Home, Status, Scan) on the configured listen
+port, backed by two JSON endpoints:
+
+- `GET /status/scannersAll` — every known scanner
+- `GET /status/scannersAvailable` — scanners currently reachable, and the
+  interface (`cli`, `socket`, or `network`) each was detected on
 
 [ci-img]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml

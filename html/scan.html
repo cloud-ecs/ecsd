@@ -1,45 +1,52 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-      integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
-      crossorigin="anonymous"
-    />
-
-    <!-- Custom styles for this template -->
-    <link href="/css/ess.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/img/favicon.ico" />
+    <title>Scan — Email Content Scanning Daemon</title>
+    <link href="/css/ecsd.css" rel="stylesheet" />
   </head>
+
   <body>
-    <nav id="navbartop" class="navbar navbar-inverse navbar-fixed-top"></nav>
+    <nav class="navbar" id="navbar"></nav>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <form action="/scan" enctype="multipart/form-data" method="post">
-        <div class="form-group">
-          <label for="filename">File Name (optional)</label>
-          <input type="text" name="filename" id="filename" />
-          <p class="help-block"></p>
+    <main>
+      <h1>Scan a message</h1>
+      <form
+        id="scan"
+        action="/scan"
+        enctype="multipart/form-data"
+        method="post"
+      >
+        <div class="field">
+          <label for="upload">Message file (.eml)</label>
+          <input type="file" id="upload" name="upload" required />
         </div>
-
-        <div class="form-group">
-          <input type="file" id="upload" name="upload" multiple="multiple" />
-        </div>
-        <button type="submit" class="btn btn-default">Upload</button>
+        <button type="submit">Scan</button>
       </form>
-    </div>
-
-    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-      integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
-      crossorigin="anonymous"
-    ></script>
+      <pre id="results" hidden></pre>
+    </main>
 
     <script>
-      $('#navbartop').load('/navbar.html')
+      fetch('/navbar.html')
+        .then((r) => r.text())
+        .then((html) => {
+          document.getElementById('navbar').innerHTML = html
+        })
+
+      const form = document.getElementById('scan')
+      const results = document.getElementById('results')
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const res = await fetch('/scan', {
+          method: 'POST',
+          body: new FormData(form),
+        })
+        results.hidden = false
+        results.textContent = JSON.stringify(await res.json(), null, 2)
+      })
     </script>
   </body>
 </html>

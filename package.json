@@ -1,6 +1,6 @@
 {
   "name": "ecsd",
-  "description": "Cloud enabled Email Content Scanner",
+  "description": "Email Content Scanning Daemon",
   "version": "0.5.0",
   "private": false,
   "keywords": [
