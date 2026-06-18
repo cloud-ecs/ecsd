@@ -28,6 +28,29 @@ describe('dcc', () => {
     })
   })
 
+  describe('requestPreamble', () => {
+    it('uses placeholders with no envelope', () => {
+      assert.equal(
+        dcc.requestPreamble(),
+        'header\n127.0.0.1\nlocalhost\n\npostmaster\n\n',
+      )
+    })
+
+    it('builds the dccifd envelope from request metadata', () => {
+      const env = [
+        ['IP', '203.0.113.7'],
+        ['Helo', 'mail.example.com'],
+        ['From', 'sender@example.com'],
+        ['Rcpt', 'a@example.net'],
+        ['Rcpt', 'b@example.net'],
+      ]
+      assert.equal(
+        dcc.requestPreamble(env),
+        'header\n203.0.113.7\nmail.example.com\nsender@example.com\na@example.net\nb@example.net\n\n',
+      )
+    })
+  })
+
   describe('TCP', () => {
     let avail
     before(async () => {

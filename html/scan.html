@@ -13,15 +13,10 @@
 
     <main>
       <h1>Scan a message</h1>
-      <form
-        id="scan"
-        action="/scan"
-        enctype="multipart/form-data"
-        method="post"
-      >
+      <form id="scan">
         <div class="field">
           <label for="upload">Message file (.eml)</label>
-          <input type="file" id="upload" name="upload" required />
+          <input type="file" id="upload" required />
         </div>
         <button type="submit">Scan</button>
       </form>
@@ -40,10 +35,9 @@
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault()
-        const res = await fetch('/scan', {
-          method: 'POST',
-          body: new FormData(form),
-        })
+        const file = document.getElementById('upload').files[0]
+        if (!file) return
+        const res = await fetch('/scan', { method: 'POST', body: file })
         results.hidden = false
         results.textContent = JSON.stringify(await res.json(), null, 2)
       })

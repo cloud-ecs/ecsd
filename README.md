@@ -33,12 +33,33 @@ A web service that receives emails via HTTP and scans them with one or many filt
 
 ## Request
 
-Send a message to be scanned as a standard HTTP file upload. The form field
-name is ignored — the first uploaded file is scanned.
+Send the raw message as the HTTP request body.
 
 ```sh
-curl -X POST -F upload=@test/files/eicar.eml localhost:8000/scan
+curl -X POST --data-binary @test/files/eicar.eml localhost:8000/scan
 ```
+
+### Envelope metadata
+
+SMTP envelope and upstream authentication results travel as `X-Env-*` request
+headers — the message body can't supply them. Engines use what they need (DCC
+builds its dccifd envelope from `IP`/`Helo`/`From`/`Rcpt`; rspamd receives the
+full set as its native headers) and ignore the rest. Repeat `X-Env-Rcpt` for
+multiple recipients.
+
+```sh
+curl -X POST --data-binary @test/files/eicar.eml \
+  -H 'X-Env-IP: 203.0.113.7' \
+  -H 'X-Env-Helo: mail.example.com' \
+  -H 'X-Env-From: sender@example.com' \
+  -H 'X-Env-Rcpt: rcpt@example.net' \
+  -H 'X-Env-SPF: pass' \
+  localhost:8000/scan
+```
+
+Any `X-Env-*` header is forwarded to rspamd verbatim (e.g. `X-Env-User`,
+`X-Env-Hostname`, `X-Env-Queue-Id`, `X-Env-TLS-Cipher`, `X-Env-TLS-Version`).
+`X-Env-SPF` is captured for DMARC evaluation (not yet implemented).
 
 ## Response
 
@@ -103,7 +124,7 @@ port, backed by two JSON endpoints:
 
 [ci-img]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/cloud-ecs/ecsd/actions/workflows/ci.yml
-[cov-img]: https://codecov.io/github/cloud-ecs/ecsd/coverage.svg
-[cov-url]: https://codecov.io/github/cloud-ecs/ecsd
+[cov-img]: https://qlty.sh/gh/cloud-ecs/projects/ecsd/coverage.svg
+[cov-url]: https://qlty.sh/gh/cloud-ecs/projects/ecsd
 [qlty-img]: https://qlty.sh/gh/cloud-ecs/projects/ecsd/maintainability.svg
 [qlty-url]: https://qlty.sh/gh/cloud-ecs/projects/ecsd
