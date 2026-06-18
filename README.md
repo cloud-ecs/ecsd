@@ -10,15 +10,18 @@ A web service that receives emails via HTTP and scans them with one or many filt
 - [x] rspamd
 - [ ] dcc
 - [ ] virustotal
-- [ ] fprot
-- [ ] f-secure
 - [x] clamav
-- [ ] eset
-- [ ] kaspersky
-- [ ] comodo
 - [x] bitdefender
 - [x] opendkim
 - [ ] opendmarc
+
+### Still viable?
+
+- [ ] fprot
+- [ ] f-secure
+- [ ] eset
+- [ ] kaspersky
+- [ ] comodo
 
 ### Legacy / Deprecated Scanners
 
