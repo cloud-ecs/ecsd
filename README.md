@@ -9,7 +9,7 @@ A web service that receives emails via HTTP and scans them with one or many filt
 - [x] [spamassassin](https://spamassassin.apache.org)
 - [x] [rspamd](https://rspamd.com)
 - [x] [dcc](https://www.dcc-servers.net/dcc/)
-- [ ] [virustotal](https://www.virustotal.com)
+- [x] [virustotal](https://www.virustotal.com)
 - [x] [clamav](https://www.clamav.net)
 - [x] [bitdefender](https://www.bitdefender.com/business/antivirus.html)
 - [x] [opendkim](http://www.opendkim.org)
