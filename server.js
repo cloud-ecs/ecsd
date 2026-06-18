@@ -1,30 +1,21 @@
 'use strict'
 
-// node.js built-ins
-var http = require('http')
-// var https      = require('https');
+const http = require('node:http')
 
-// npm deps
-var express = require('express')
+const express = require('express')
+const logger = require('morgan')
 
-// local deps
-var logger = require('morgan')
+const config = require('./lib/config').loadConfig()
 
-// var logger      = require('./lib/logger');
-var config = require('./lib/config').loadConfig()
-
-var app = express()
+const app = express()
 app.use(logger('dev'))
 
 require('./routes/static').public(app)
 
 http.createServer(app).listen(config.listen.port)
-console.log('Listening on port %d', config.listen.port)
+console.log(`Listening on port ${config.listen.port}`)
 
 require('./routes/scan').public(app)
-
-// the session is valid, continue
-// require('./routes/static').private(app);
 
 require('./routes/static').index(app)
 require('./routes/error').addErrRoutes(app)

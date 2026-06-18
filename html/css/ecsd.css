@@ -1,0 +1,140 @@
+:root {
+  --bg: #1b1e24;
+  --panel: #252830;
+  --fg: #e6e8eb;
+  --muted: #9aa0a6;
+  --accent: #4da3ff;
+  --pass: #3fb950;
+  --fail: #f85149;
+  --border: #333842;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  line-height: 1.5;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+nav.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+nav.navbar .brand {
+  margin-right: auto;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+nav.navbar a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+nav.navbar a:hover {
+  color: var(--accent);
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+h1 {
+  font-weight: 600;
+}
+
+a {
+  color: var(--accent);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.pass {
+  color: var(--pass);
+}
+
+.fail {
+  color: var(--fail);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--muted);
+}
+
+input[type='text'],
+input[type='file'] {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: var(--panel);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+button {
+  padding: 0.5rem 1.25rem;
+  font-weight: 600;
+  color: #0b1622;
+  background-color: var(--accent);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+pre {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  overflow: auto;
+  background-color: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}

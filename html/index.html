@@ -2,47 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <meta name="description" content="" />
     <link rel="icon" href="/img/favicon.ico" />
-    <meta name="author" content="" />
-
-    <title>Email Scanning Server</title>
-
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-      integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
-      crossorigin="anonymous"
-    />
-
-    <!-- Custom styles for this template -->
-    <link href="/css/ess.css" rel="stylesheet" />
+    <title>Email Content Scanning Daemon</title>
+    <link href="/css/ecsd.css" rel="stylesheet" />
   </head>
 
   <body>
-    <nav id="navbartop" class="navbar navbar-inverse navbar-fixed-top"></nav>
+    <nav class="navbar" id="navbar"></nav>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane fade" data-toggle="tab" id="monitor">
-        <h1>Monitor</h1>
-        <p class="lead">ESS monitor page</p>
-      </div>
-    </div>
-    <!-- /.tab-content -->
+    <main>
+      <h1>Email Content Scanning Daemon</h1>
+      <p>
+        A web service that receives email over HTTP and scans it with one or
+        many filtering engines — antivirus, antispam, and policy engines.
+      </p>
+      <p>
+        <a href="/scan.html">Scan a message</a> or check the
+        <a href="/status.html">engine status</a>.
+      </p>
+    </main>
 
-    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-    <!-- http://code.jquery.com/ui/1.10.4/jquery-ui.min.js -->
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-      integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
-      crossorigin="anonymous"
-    ></script>
     <script>
-      $('#navbartop').load('/navbar.html')
+      fetch('/navbar.html')
+        .then((r) => r.text())
+        .then((html) => {
+          document.getElementById('navbar').innerHTML = html
+        })
     </script>
   </body>
 </html>
