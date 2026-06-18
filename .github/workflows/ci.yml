@@ -23,6 +23,20 @@ jobs:
       - run: npm install
       - run: npm run lint
 
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+      - run: npm install
+      - run: npm run test:coverage
+      - uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
+
   test:
     needs: [get-lts]
     strategy:
