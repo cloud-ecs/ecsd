@@ -1,7 +1,7 @@
 {
   "name": "ecsd",
   "description": "Email Content Scanning Daemon",
-  "version": "0.5.0",
+  "version": "0.8.0",
   "private": false,
   "keywords": [
     "email",
