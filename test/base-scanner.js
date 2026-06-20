@@ -1,9 +1,7 @@
-'use strict'
+import assert from 'node:assert/strict'
+import { describe, it } from 'node:test'
 
-const assert = require('node:assert/strict')
-const { describe, it } = require('node:test')
-
-const BaseScanner = require('../lib/base-scanner')
+import BaseScanner from '../lib/base-scanner.js'
 const base = new BaseScanner('base-test')
 
 describe('base-scanner', () => {

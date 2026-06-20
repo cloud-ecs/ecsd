@@ -1,11 +1,10 @@
-'use strict'
-
 process.env.NODE_ENV = 'test'
 
-const assert = require('node:assert/strict')
-const { describe, it, before } = require('node:test')
+import assert from 'node:assert/strict'
+import { describe, it, before } from 'node:test'
 
-const rspamd = require('../lib/rspamd').createScanner()
+import { createScanner } from '../lib/rspamd.js'
+const rspamd = createScanner()
 
 describe('rspamd', () => {
   describe('rspamc cli', () => {

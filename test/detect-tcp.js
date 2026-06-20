@@ -1,9 +1,7 @@
-'use strict'
+import assert from 'node:assert/strict'
+import { describe, it } from 'node:test'
 
-const assert = require('node:assert/strict')
-const { describe, it } = require('node:test')
-
-const findTcp = require('../lib/detect-tcp').findTcp
+import { findTcp } from '../lib/detect-tcp.js'
 
 describe('detect-tcp', () => {
   it.skip('detects a listening port', async () => {

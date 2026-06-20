@@ -1,10 +1,13 @@
-'use strict'
+import http from 'node:http'
 
-const http = require('node:http')
+import express from 'express'
 
-const express = require('express')
+import { loadConfig } from './lib/config.js'
+import * as staticRoutes from './routes/static.js'
+import * as scanRoutes from './routes/scan.js'
+import * as errorRoutes from './routes/error.js'
 
-const config = require('./lib/config').loadConfig()
+const config = loadConfig()
 
 const app = express()
 app.use((req, res, next) => {
@@ -16,12 +19,12 @@ app.use((req, res, next) => {
   next()
 })
 
-require('./routes/static').public(app)
+staticRoutes.public(app)
 
 http.createServer(app).listen(config.listen.port)
 console.log(`Listening on port ${config.listen.port}`)
 
-require('./routes/scan').public(app)
+scanRoutes.public(app)
 
-require('./routes/static').index(app)
-require('./routes/error').addErrRoutes(app)
+staticRoutes.index(app)
+errorRoutes.addErrRoutes(app)

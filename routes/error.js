@@ -1,13 +1,12 @@
-'use strict'
+import { loadConfig } from '../lib/config.js'
+const config = loadConfig()
 
-const config = require('../lib/config').loadConfig()
-
-exports.addErrRoutes = function (app) {
-  this.load404(app)
-  this.loadUnhandled(app)
+export function addErrRoutes(app) {
+  load404(app)
+  loadUnhandled(app)
 }
 
-exports.load404 = function (app) {
+export function load404(app) {
   app.use(function (req, res) {
     if (req.accepts('html')) {
       res.status(404).sendFile('404.html', {
@@ -27,7 +26,7 @@ exports.load404 = function (app) {
   })
 }
 
-exports.loadUnhandled = function (app) {
+export function loadUnhandled(app) {
   // Express only treats middleware as an error handler when it declares 4 args
   app.use(function (err, req, res, _next) {
     console.error(err.stack)

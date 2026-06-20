@@ -28,8 +28,8 @@ Shared instructions for every coding agent in this repo. The tool-specific files
 ## Coding standards
 
 - Target current Node LTS; prefer ES2024 over legacy patterns.
-- Existing code is CommonJS (`require`/`exports`) — match it.
-- Add `node:` prefixes to built-in requires in any file you touch (`require('fs')` → `require('node:fs')`).
+- The package is ESM (`"type": "module"`): use `import`/`export`, not `require`/`module.exports`. Relative imports need explicit file extensions (`./logger.js`). Import named exports directly (`import { loadConfig } from './config.js'`) and whole-module namespaces with `import * as` (`import * as logger from './logger.js'`); `BaseScanner` and `ClamStream` are default exports. `public`/`private` are reserved words, so route registrars are named internally and re-exported via `export { fn as public }`. Optional deps load through `await import()` in a try/catch (see `lib/dspam.js`).
+- Add `node:` prefixes to built-in imports in any file you touch (`import fs from 'fs'` → `import fs from 'node:fs'`).
 - Prefer: promise APIs (`fs/promises`), `for...of`/`for...in` over `forEach`, `node:readline` for line parsing, template literals over concatenation, `true`/`false` over `1`/`0`, and guard-style early returns.
 - Remove commented-out code (it lives in git history). `npm run lint` and `npm run prettier` must pass without warnings.
 

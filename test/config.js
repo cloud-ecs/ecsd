@@ -1,9 +1,7 @@
-'use strict'
+import assert from 'node:assert/strict'
+import { describe, it } from 'node:test'
 
-const assert = require('node:assert/strict')
-const { describe, it } = require('node:test')
-
-const config = require('../lib/config')
+import * as config from '../lib/config.js'
 
 describe('cloud-email-scanner', () => {
   describe('loadConfig', () => {

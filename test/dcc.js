@@ -1,10 +1,9 @@
-'use strict'
+import assert from 'node:assert/strict'
+import path from 'node:path'
+import { describe, it, before } from 'node:test'
 
-const assert = require('node:assert/strict')
-const path = require('node:path')
-const { describe, it, before } = require('node:test')
-
-const dcc = require('../lib/dcc').createScanner()
+import { createScanner } from '../lib/dcc.js'
+const dcc = createScanner()
 
 const cleanMsg = path.resolve('test/files/clean.eml')
 

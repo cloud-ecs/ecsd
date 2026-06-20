@@ -1,12 +1,12 @@
-'use strict'
+import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
+import { describe, it, before, after } from 'node:test'
+import express from 'express'
 
-const assert = require('node:assert/strict')
-const fs = require('node:fs/promises')
-const { describe, it, before, after } = require('node:test')
-const express = require('express')
+import * as scanRoutes from '../routes/scan.js'
 
 const app = express()
-require('../routes/scan').public(app)
+scanRoutes.public(app)
 
 describe('routes, scan', () => {
   let server

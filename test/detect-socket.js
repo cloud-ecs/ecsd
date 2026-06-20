@@ -1,9 +1,7 @@
-'use strict'
+import assert from 'node:assert/strict'
+import { describe, it } from 'node:test'
 
-const assert = require('node:assert/strict')
-const { describe, it } = require('node:test')
-
-const findSocket = require('../lib/detect-socket').findSocket
+import { findSocket } from '../lib/detect-socket.js'
 
 describe('detect-socket', () => {
   it.skip('finds clamd.socket', async () => {

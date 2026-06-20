@@ -1,9 +1,7 @@
-'use strict'
+import assert from 'node:assert/strict'
+import { describe, it, before } from 'node:test'
 
-const assert = require('node:assert/strict')
-const { describe, it, before } = require('node:test')
-
-const { createScanner, EICAR_SHA256 } = require('../lib/virustotal')
+import { createScanner, EICAR_SHA256 } from '../lib/virustotal.js'
 const vt = createScanner()
 
 describe('virustotal', () => {

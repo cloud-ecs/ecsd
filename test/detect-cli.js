@@ -1,9 +1,7 @@
-'use strict'
+import assert from 'node:assert/strict'
+import { describe, it } from 'node:test'
 
-const assert = require('node:assert/strict')
-const { describe, it } = require('node:test')
-
-const findBin = require('../lib/detect-cli').findBin
+import { findBin } from '../lib/detect-cli.js'
 
 describe('detect-cli', () => {
   it('finds the bin "which"', async () => {

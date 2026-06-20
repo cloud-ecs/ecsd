@@ -1,10 +1,9 @@
-'use strict'
+import assert from 'node:assert/strict'
+import path from 'node:path'
+import { describe, it, before } from 'node:test'
 
-const assert = require('node:assert/strict')
-const path = require('node:path')
-const { describe, it, before } = require('node:test')
-
-const clamav = require('../lib/clamav').createScanner()
+import { createScanner } from '../lib/clamav.js'
+const clamav = createScanner()
 
 const virusMsg = path.resolve('test/files/eicar.eml')
 const cleanMsg = path.resolve('test/files/clean.eml')
