@@ -1,11 +1,12 @@
-'use strict'
+import express from 'express'
 
-const express = require('express')
-
-const config = require('../lib/config').loadConfig()
+import { loadConfig } from '../lib/config.js'
+const config = loadConfig()
 const dr = config.docroot
 
-exports.public = function (app) {
+// `public` and `private` are reserved words in module code, so they can't name
+// function bindings; export them under those names for callers via aliases.
+function registerPublic(app) {
   app.get('/favicon.ico', (req, res) => {
     res.sendFile('img/favicon.ico', { root: dr, maxAge: '7d' })
   })
@@ -15,10 +16,12 @@ exports.public = function (app) {
   app.use('/fonts/', express.static(`${dr}/fonts`, { maxAge: '10d' }))
 }
 
-exports.index = function (app) {
+export function index(app) {
   app.use('/', express.static(dr))
 }
 
-exports.private = function (app) {
+function registerPrivate(app) {
   app.use('/', express.static(dr, { redirect: false }))
 }
+
+export { registerPublic as public, registerPrivate as private }

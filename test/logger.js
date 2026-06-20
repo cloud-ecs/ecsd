@@ -1,9 +1,7 @@
-'use strict'
+import assert from 'node:assert/strict'
+import { describe, it } from 'node:test'
 
-const assert = require('node:assert/strict')
-const { describe, it } = require('node:test')
-
-const logger = require('../lib/logger')
+import * as logger from '../lib/logger.js'
 
 describe('logger', () => {
   for (const level of ['info', 'error', 'debug']) {

@@ -1,11 +1,10 @@
-'use strict'
-
 process.env.NODE_ENV = 'test'
 
-const assert = require('node:assert/strict')
-const { describe, it, before } = require('node:test')
+import assert from 'node:assert/strict'
+import { describe, it, before } from 'node:test'
 
-const maildmarc = require('../lib/maildmarc').createScanner()
+import { createScanner } from '../lib/maildmarc.js'
+const maildmarc = createScanner()
 
 describe('maildmarc', () => {
   describe('parseScanReply', () => {

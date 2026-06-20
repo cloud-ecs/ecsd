@@ -2,6 +2,7 @@
   "name": "ecsd",
   "description": "Email Content Scanning Daemon",
   "version": "0.9.1",
+  "type": "module",
   "keywords": [
     "email",
     "antivirus",

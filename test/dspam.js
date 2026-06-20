@@ -1,10 +1,9 @@
-'use strict'
+import assert from 'node:assert/strict'
+import path from 'node:path'
+import { describe, it, before } from 'node:test'
 
-const assert = require('node:assert/strict')
-const path = require('node:path')
-const { describe, it, before } = require('node:test')
-
-const dspam = require('../lib/dspam').createScanner()
+import { createScanner } from '../lib/dspam.js'
+const dspam = createScanner()
 
 const spamMsg = path.resolve('test/files/gtube.eml')
 const cleanMsg = path.resolve('test/files/clean.eml')

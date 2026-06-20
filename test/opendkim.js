@@ -1,10 +1,9 @@
-'use strict'
+import assert from 'node:assert/strict'
+import path from 'node:path'
+import { describe, it, before } from 'node:test'
 
-const assert = require('node:assert/strict')
-const path = require('node:path')
-const { describe, it, before } = require('node:test')
-
-const opendkim = require('../lib/opendkim').createScanner()
+import { createScanner } from '../lib/opendkim.js'
+const opendkim = createScanner()
 
 const signedValidMsg = path.resolve('test/files/dkim-valid.eml')
 const signedInvalidMsg = path.resolve('test/files/dkim-invalid.eml')
